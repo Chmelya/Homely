@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\Homely.API.Contracts\Homely.API.Contracts.csproj" />
+    <ProjectReference Include="..\Homely.Authentication\Homely.Security.Authentication.csproj" />
+    <ProjectReference Include="..\Homely.Data\Homely.Infrastructure.Data.csproj" />
+  </ItemGroup>
+</Project>
