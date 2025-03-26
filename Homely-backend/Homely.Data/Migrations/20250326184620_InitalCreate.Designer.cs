@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homely.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250326095231_InitalCreate")]
+    [Migration("20250326184620_InitalCreate")]
     partial class InitalCreate
     {
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Homely.Infrastructure.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Permission");
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("Homely.Infrastructure.Data.Entities.Rbac.Role", b =>
@@ -84,7 +84,6 @@ namespace Homely.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")

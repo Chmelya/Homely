@@ -1,7 +1,7 @@
-﻿using Homely.Infrastructure.Data.Entities.Common;
+﻿using Homely.Domain.Entities.Common;
 using System.Linq.Expressions;
 
-namespace Homely.Infrastructure.Data.Repositories.Base.Interfaces;
+namespace Homely.Application.Common.Interfaces.Repositoreis;
 
 public interface IBaseRepository<TEntity> where TEntity : Entity
 {

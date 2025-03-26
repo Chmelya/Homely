@@ -1,6 +1,6 @@
-﻿using Homely.Infrastructure.Data.Entities.Common;
+﻿using Homely.Domain.Entities.Common;
 
-namespace Homely.Infrastructure.Data.Entities.Rbac;
+namespace Homely.Domain.Entities.Rbac;
 
 public class Role : Entity
 {

@@ -1,4 +1,4 @@
-﻿namespace Homely.Infrastructure.Data.Entities.Common;
+﻿namespace Homely.Domain.Entities.Common;
 
 public class Entity
 {

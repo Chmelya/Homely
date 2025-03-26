@@ -1,9 +1,9 @@
-﻿using Homely.Infrastructure.Data.Entities.Common;
-using Homely.Infrastructure.Data.Repositories.Base.Interfaces;
+﻿using Homely.Application.Common.Interfaces.Repositoreis;
+using Homely.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Homely.Infrastructure.Data.Repositories.Base;
+namespace Homely.Infrastructure.Data.Repositories;
 
 public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IBaseRepository<TEntity>
      where TEntity : Entity

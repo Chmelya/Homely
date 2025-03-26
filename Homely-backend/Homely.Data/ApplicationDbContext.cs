@@ -1,9 +1,6 @@
-﻿using Homely.Infrastructure.Data.Entities;
-using Homely.Infrastructure.Data.Entities.Rbac;
-using Microsoft.Build.Framework;
+﻿using Homely.Domain.Entities;
+using Homely.Domain.Entities.Rbac;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Reflection;
 
 namespace Homely.Infrastructure.Data;
 
@@ -12,12 +9,17 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
     }
 
     public DbSet<User> Users { get; set; }
 
     public DbSet<Role> Roles { get; set; }
+
+    public DbSet<Permission> Permissions { get; set; }
+
+    //public DbSet<ServiceRequest> ServiceRequests { get; set; }
+
+    //public DbSet<ServiceRequestDetails> ServiceRequestDetails { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

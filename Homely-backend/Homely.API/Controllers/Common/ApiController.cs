@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Homely.API.Controllers.Base;
+namespace Homely.API.Controllers.Common;
 
 [ApiController]
 [Route("/api")]

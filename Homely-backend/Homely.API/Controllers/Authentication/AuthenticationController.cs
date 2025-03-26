@@ -1,7 +1,7 @@
-﻿using Homely.API.Contracts.Authentication.Requests;
-using Homely.API.Controllers.Base;
-using Homely.Infrastructure.Data.Entities;
-using Homely.Security.Authentication.Services.Interfaces;
+﻿using Homely.API.Controllers.Common;
+using Homely.Application.Authentication.Requests;
+using Homely.Application.Common.Interfaces.Services;
+using Homely.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
