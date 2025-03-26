@@ -21,7 +21,7 @@ namespace Homely.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Homely.Infrastructure.Data.Entities.Rbac.Permission", b =>
+            modelBuilder.Entity("Homely.Domain.Entities.Rbac.Permission", b =>
                 {
                     b.Property<decimal>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.ToTable("Permissions");
                 });
 
-            modelBuilder.Entity("Homely.Infrastructure.Data.Entities.Rbac.Role", b =>
+            modelBuilder.Entity("Homely.Domain.Entities.Rbac.Role", b =>
                 {
                     b.Property<decimal>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Homely.Infrastructure.Data.Entities.User", b =>
+            modelBuilder.Entity("Homely.Domain.Entities.User", b =>
                 {
                     b.Property<decimal>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,6 +81,7 @@ namespace Homely.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -97,16 +98,16 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Homely.Infrastructure.Data.Entities.Rbac.Permission", b =>
+            modelBuilder.Entity("Homely.Domain.Entities.Rbac.Permission", b =>
                 {
-                    b.HasOne("Homely.Infrastructure.Data.Entities.Rbac.Role", null)
+                    b.HasOne("Homely.Domain.Entities.Rbac.Role", null)
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId");
                 });
 
-            modelBuilder.Entity("Homely.Infrastructure.Data.Entities.User", b =>
+            modelBuilder.Entity("Homely.Domain.Entities.User", b =>
                 {
-                    b.HasOne("Homely.Infrastructure.Data.Entities.Rbac.Role", "Role")
+                    b.HasOne("Homely.Domain.Entities.Rbac.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -115,7 +116,7 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Homely.Infrastructure.Data.Entities.Rbac.Role", b =>
+            modelBuilder.Entity("Homely.Domain.Entities.Rbac.Role", b =>
                 {
                     b.Navigation("Permissions");
                 });

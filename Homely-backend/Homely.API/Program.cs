@@ -1,6 +1,8 @@
+using Homely.Application.Common.Interfaces.Repositoreis;
 using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.Common.Services;
 using Homely.Infrastructure.Data;
+using Homely.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -39,13 +41,16 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddControllers();
 
     builder.Services.AddScoped<IAuthenticationSerivce, AuthenticationSerivce>();
+
+    //TODO reflection
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
 }
 
 static WebApplication EnsureDbMigration(WebApplication app)
 {
     using IServiceScope serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-    ApplicationDbContext? context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+    var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
     context?.Database.Migrate();
 
     return app;
