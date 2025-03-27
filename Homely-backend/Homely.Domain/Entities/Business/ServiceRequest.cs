@@ -1,6 +1,6 @@
 ﻿using Homely.Domain.Entities.Common;
 
-namespace Homely.Domain.Entities.Domian;
+namespace Homely.Domain.Entities.Business;
 
 public class ServiceRequest : TrackedEntity
 {

@@ -51,6 +51,10 @@ static WebApplication EnsureDbMigration(WebApplication app)
     using IServiceScope serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
     var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+    //context?.Database.EnsureDeleted();
+    //context?.Database.EnsureCreated();
+
     context?.Database.Migrate();
 
     return app;

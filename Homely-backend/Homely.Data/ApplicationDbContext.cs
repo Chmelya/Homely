@@ -1,6 +1,8 @@
 ﻿using Homely.Domain.Entities;
 using Homely.Domain.Entities.Rbac;
+using Homely.Infrastructure.Data.Configurations.Rbac;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Homely.Infrastructure.Data;
 
@@ -23,6 +25,10 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.SeedRolesPermissions();
+
         base.OnModelCreating(modelBuilder);
     }
 

@@ -1,6 +1,6 @@
 ﻿namespace Homely.Domain.Entities.Common;
 
-public class Entity
+public abstract class Entity
 {
-    public ulong Id { get; set; }
+    public int Id { get; set; }
 }

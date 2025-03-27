@@ -1,13 +1,13 @@
-﻿using Homely.API.Controllers.Common;
-using Homely.Application.Authentication.Requests;
+﻿using Homely.Application.Authentication.Requests;
 using Homely.Application.Common.Interfaces.Repositoreis;
 using Homely.Application.Common.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Homely.API.Controllers.Authentication;
+namespace Homely.API.Controllers;
 
 [AllowAnonymous]
+[Route("api/auth")]
 public class AuthenticationController(
     IAuthenticationSerivce authenticationService,
     IUserRepository userRepository
@@ -16,12 +16,16 @@ public class AuthenticationController(
     [HttpPost("/signin", Name = "Sign in")]
     public async Task<IActionResult> SignIn(SignInRequest request)
     {
-        var user = await userRepository.FindAsync(u => u.Email == request.Email)
-            ?? throw new Exception("UserNotFound");
+        var user = await userRepository.FindAsync(u => u.Email == request.Email);
 
-        authenticationService.GenerateJwtTokenAsync(user);
+        if (user?.Password != request.Password)
+        {
+            return NotFound("Login or password is incorrect");
+        }
 
-        return Ok();
+        var token = authenticationService.GenerateJwtTokenAsync(user);
+
+        return Ok(token);
     }
 
     //[HttpPost("/signout", Name = "Sign out")]
