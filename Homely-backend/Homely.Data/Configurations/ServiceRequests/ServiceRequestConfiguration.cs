@@ -24,5 +24,10 @@ internal class ServiceRequestConfiguration : IEntityTypeConfiguration<ServiceReq
             .WithMany()
             .HasForeignKey(sr => sr.HandlerId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        //builder
+        //    .HasOne(sr => sr.CategoryEntity)
+        //    .WithMany()
+        //    .HasForeignKey(sr => (int)sr.Category);
     }
 }

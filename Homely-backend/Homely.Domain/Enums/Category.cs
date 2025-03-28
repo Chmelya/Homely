@@ -23,5 +23,5 @@ public enum Category
     Road = 6,
 
     [Description("Parking")]
-    Parking = 6,
+    Parking = 7,
 }
