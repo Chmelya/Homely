@@ -40,10 +40,12 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddOpenApi();
     builder.Services.AddControllers();
 
-    builder.Services.AddScoped<IAuthenticationSerivce, AuthenticationSerivce>();
-
     //TODO reflection
     builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+
+    builder.Services.AddScoped<IAuthenticationSerivce, AuthenticationSerivce>();
+    builder.Services.AddScoped<IServiceRequestService, ServiceRequestService>();
 }
 
 static WebApplication EnsureDbMigration(WebApplication app)

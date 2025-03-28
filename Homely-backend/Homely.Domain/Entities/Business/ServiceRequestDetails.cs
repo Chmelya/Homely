@@ -9,7 +9,5 @@ public class ServiceRequestDetails : Entity
 
     public ServiceRequest ServiceRequest { get; set; }
 
-    public string Title { get; set; }
-
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }

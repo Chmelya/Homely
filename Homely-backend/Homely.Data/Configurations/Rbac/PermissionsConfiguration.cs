@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Homely.Infrastructure.Data.Configurations.Rbac;
 
-internal class PermissionsConfiguration : IEntityTypeConfiguration<Permission>
+internal class Categories : IEntityTypeConfiguration<Permission>
 {
     public void Configure(EntityTypeBuilder<Permission> builder)
     {

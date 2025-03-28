@@ -30,6 +30,9 @@ namespace Homely.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AdministratorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -39,26 +42,21 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HandlerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Urgency")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Category");
+                    b.HasIndex("AdministratorId");
 
                     b.HasIndex("CreatorId");
-
-                    b.HasIndex("HandlerId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("Urgency");
 
                     b.ToTable("ServiceRequests");
                 });
@@ -72,15 +70,10 @@ namespace Homely.Infrastructure.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ServiceRequestId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -102,6 +95,43 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Other"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Water"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sewer"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Electricity"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Garbage"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Road"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Parking"
+                        });
                 });
 
             modelBuilder.Entity("Homely.Domain.Entities.EnumEnities.ServiceRequestStatus", b =>
@@ -116,6 +146,28 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceRequestStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Created"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "In progress"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Done"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Rejected"
+                        });
                 });
 
             modelBuilder.Entity("Homely.Domain.Entities.EnumEnities.Urgency", b =>
@@ -130,6 +182,33 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Urgency");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Critical"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "High"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Meduim"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Low"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Lowest"
+                        });
                 });
 
             modelBuilder.Entity("Homely.Domain.Entities.Rbac.Permission", b =>
@@ -282,11 +361,10 @@ namespace Homely.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Homely.Domain.Entities.Business.ServiceRequest", b =>
                 {
-                    b.HasOne("Homely.Domain.Entities.EnumEnities.Category", "CategoryEntity")
+                    b.HasOne("Homely.Domain.Entities.User", "Administrator")
                         .WithMany()
-                        .HasForeignKey("Category")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdministratorId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Homely.Domain.Entities.User", "Creator")
                         .WithMany()
@@ -294,33 +372,9 @@ namespace Homely.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Homely.Domain.Entities.User", "Handler")
-                        .WithMany()
-                        .HasForeignKey("HandlerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Homely.Domain.Entities.EnumEnities.ServiceRequestStatus", "StatusEntity")
-                        .WithMany()
-                        .HasForeignKey("Status")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Homely.Domain.Entities.EnumEnities.Urgency", "UrgencyEntity")
-                        .WithMany()
-                        .HasForeignKey("Urgency")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CategoryEntity");
+                    b.Navigation("Administrator");
 
                     b.Navigation("Creator");
-
-                    b.Navigation("Handler");
-
-                    b.Navigation("StatusEntity");
-
-                    b.Navigation("UrgencyEntity");
                 });
 
             modelBuilder.Entity("Homely.Domain.Entities.Business.ServiceRequestDetails", b =>

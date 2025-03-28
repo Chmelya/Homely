@@ -6,7 +6,7 @@ namespace Homely.Domain.Entities.EnumEnities
     public class ServiceRequestStatus : Entity
     {
         [Key]
-        public new Enums.ServiceRequestStatus Id { get; set; }
+        public new Enums.RequestStatus Id { get; set; }
 
         public string Name { get; set; }
     }

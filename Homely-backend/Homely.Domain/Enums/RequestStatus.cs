@@ -2,7 +2,7 @@
 
 namespace Homely.Domain.Enums;
 
-public enum ServiceRequestStatus
+public enum RequestStatus
 {
     [Description("Created")]
     Created = 1,

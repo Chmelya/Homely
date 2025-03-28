@@ -20,9 +20,9 @@ internal class ServiceRequestConfiguration : IEntityTypeConfiguration<ServiceReq
             .OnDelete(DeleteBehavior.NoAction);
 
         builder
-            .HasOne(sr => sr.Handler)
+            .HasOne(sr => sr.Administrator)
             .WithMany()
-            .HasForeignKey(sr => sr.HandlerId)
+            .HasForeignKey(sr => sr.AdministratorId)
             .OnDelete(DeleteBehavior.NoAction);
 
         //builder
