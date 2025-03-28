@@ -1,6 +1,9 @@
-﻿namespace Homely.Domain.Entities.Common;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Entity
+namespace Homely.Domain.Entities.Common;
+
+public abstract class Entity
 {
-    public ulong Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 }

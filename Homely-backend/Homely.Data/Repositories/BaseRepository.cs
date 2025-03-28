@@ -2,6 +2,7 @@
 using Homely.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Homely.Infrastructure.Data.Repositories;
 
@@ -30,6 +31,15 @@ public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IB
     {
         context.Set<TEntity>().UpdateRange(entities);
         await context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<TEntity?> FindAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        bool isAsNoTracking = false,
+        CancellationToken cancellationToken = default)
+    {
+        return await Get(isAsNoTracking)
+            .FirstOrDefaultAsync(predicate);
     }
 
     public virtual async Task<List<TEntity>> FindManyAsync(
