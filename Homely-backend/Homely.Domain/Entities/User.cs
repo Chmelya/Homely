@@ -1,4 +1,5 @@
-﻿using Homely.Domain.Entities.Common;
+﻿using Homely.Domain.Entities.Business;
+using Homely.Domain.Entities.Common;
 using Homely.Domain.Entities.Rbac;
 
 namespace Homely.Domain.Entities;
@@ -11,7 +12,7 @@ public class User : Entity
 
     public string FirstName { get; set; }
 
-    public string MiddleName { get; set; }
+    public string? MiddleName { get; set; }
 
     public string LastName { get; set; }
 
