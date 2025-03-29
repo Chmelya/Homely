@@ -9,7 +9,8 @@ namespace Homely.API.Controllers
     public class ServiceRequestController(IServiceRequestService requestService) : ApiController
     {
         [HttpPost]
-        public async Task<IActionResult> CreateRequest(CreateServiceRequestRequest request)
+        public async Task<IActionResult> CreateRequest(
+            [FromBody] CreateServiceRequestRequest request)
         {
             await requestService.CreateServiceRequestAsync(request);
 
@@ -17,8 +18,12 @@ namespace Homely.API.Controllers
         }
 
         [HttpPatch("/{requestId:int}")]
-        public IActionResult EditRequest(int requestId)
+        public async Task<IActionResult> EditRequest(
+            [FromQuery] int requestId,
+            [FromBody] UpdateServiceRequestRequest request)
         {
+            await requestService.UpdateServiceRequestAsync(request);
+
             return Ok();
         }
     }
