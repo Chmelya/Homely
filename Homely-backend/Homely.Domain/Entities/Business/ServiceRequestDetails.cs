@@ -1,5 +1,4 @@
 ﻿using Homely.Domain.Entities.Base;
-using Homely.Domain.Enums;
 
 namespace Homely.Domain.Entities.Business;
 

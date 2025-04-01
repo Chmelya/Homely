@@ -1,5 +1,4 @@
 ﻿using Homely.Domain.Entities.Base;
-using Homely.Domain.Entities.Business;
 using Homely.Domain.Entities.Rbac;
 
 namespace Homely.Domain.Entities.Common;
