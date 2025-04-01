@@ -9,7 +9,12 @@ internal class UsersConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder
-            .HasIndex(p => p.Email)
+            .HasOne(u => u.Role)
+            .WithMany()
+            .HasForeignKey(u => u.RoleId);
+
+        builder
+            .HasIndex(u => u.Email)
             .IsUnique();
     }
 }

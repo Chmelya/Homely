@@ -1,4 +1,4 @@
-﻿using Homely.Application.Common.Interfaces.Repositoreis;
+﻿using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.ServiceRequests;
 using Homely.Domain.Entities.Business;

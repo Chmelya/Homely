@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
     <ProjectReference Include="..\Homely.Application\Homely.Application.csproj" />
     <ProjectReference Include="..\Homely.Domain\Homely.Domain.csproj" />
   </ItemGroup>
-
 </Project>

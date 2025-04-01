@@ -16,5 +16,7 @@ public class User : Entity
 
     public string LastName { get; set; }
 
+    public int RoleId { get; set; }
+
     public Role Role { get; set; }
 }
