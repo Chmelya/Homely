@@ -1,14 +1,14 @@
 ﻿using Homely.Application.Authentication.Requests;
-using Homely.Application.Common.Interfaces.Repositoreis;
-using Homely.Application.Common.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
+using Homely.Application.Common.Interfaces.Repositories;
+using Homely.Infrastructure.Identification.Authentication.Interfaces;
+using Homely.Infrastructure.Identification.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homely.API.Controllers;
 
-[AllowAnonymous]
+[Authorization(allowAnonymus: true)]
 public class AuthenticationController(
-    IAuthenticationSerivce authenticationService,
+    IJwtProvider authenticationService,
     IUserRepository userRepository
     ) : ApiController
 {
@@ -22,14 +22,8 @@ public class AuthenticationController(
             return NotFound("Login or password is incorrect");
         }
 
-        var token = authenticationService.GenerateJwtTokenAsync(user);
+        var token = await authenticationService.GenerateJwtToken(user);
 
         return Ok(token);
     }
-
-    //[HttpPost("/signout", Name = "Sign out")]
-    //public async Task<IActionResult> SignOut()
-    //{
-    //    return Ok();
-    //}
 }

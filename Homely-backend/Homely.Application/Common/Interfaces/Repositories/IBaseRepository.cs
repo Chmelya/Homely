@@ -1,7 +1,7 @@
 ﻿using Homely.Domain.Entities.Base;
 using System.Linq.Expressions;
 
-namespace Homely.Application.Common.Interfaces.Repositoreis;
+namespace Homely.Application.Common.Interfaces.Repositories;
 
 public interface IBaseRepository<TEntity> where TEntity : Entity
 {
@@ -22,8 +22,6 @@ public interface IBaseRepository<TEntity> where TEntity : Entity
         Expression<Func<TEntity, bool>> predicate,
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default);
-
-    //IQueryable<TEntity> GetAll(bool isAsNoTracking = false);
 
     List<TEntity> GetAllAsList(bool isAsNoTracking = false);
 }

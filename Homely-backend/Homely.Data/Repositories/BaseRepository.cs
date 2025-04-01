@@ -1,14 +1,30 @@
-﻿using Homely.Application.Common.Interfaces.Repositoreis;
+﻿using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Homely.Infrastructure.Data.Repositories;
 
 public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IBaseRepository<TEntity>
      where TEntity : Entity
 {
+    protected DbSet<TEntity> Get(bool isAsNoTracking = false)
+    {
+        DbSet<TEntity> dbSet = context.Set<TEntity>();
+
+        if (isAsNoTracking)
+        {
+            dbSet.AsNoTracking();
+        }
+
+        return dbSet;
+    }
+
+    protected IQueryable<TEntity> GetAll(bool isAsNoTracking = false)
+    {
+        return Get(isAsNoTracking).AsSplitQuery();
+    }
+
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await context.Set<TEntity>().AddAsync(entity, cancellationToken);
@@ -54,25 +70,8 @@ public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IB
             .ToListAsync(cancellationToken);
     }
 
-    public IQueryable<TEntity> GetAll(bool isAsNoTracking = false)
-    {
-        return Get(isAsNoTracking).AsSplitQuery();
-    }
-
     public List<TEntity> GetAllAsList(bool isAsNoTracking = false)
     {
         return GetAll(isAsNoTracking).ToList();
-    }
-
-    private DbSet<TEntity> Get(bool isAsNoTracking = false)
-    {
-        DbSet<TEntity> dbSet = context.Set<TEntity>();
-
-        if (isAsNoTracking)
-        {
-            dbSet.AsNoTracking();
-        }
-
-        return dbSet;
     }
 }

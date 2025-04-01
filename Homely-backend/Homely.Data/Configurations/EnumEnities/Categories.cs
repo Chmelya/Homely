@@ -1,7 +1,7 @@
 ﻿using Homely.Application.Extensions;
+using Homely.Domain.Entities.EnumEnities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Homely.Domain.Entities.EnumEnities;
 
 namespace Homely.Infrastructure.Data.Configurations.EnumEnities;
 
