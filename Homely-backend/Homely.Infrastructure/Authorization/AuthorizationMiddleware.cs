@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.Features;
 
 namespace Homely.Infrastructure.Identification.Authorization;
 
-public class AuthorizationMiddleware(RequestDelegate next)
+internal class AuthorizationMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext httpContext)
     {

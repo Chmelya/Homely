@@ -1,7 +1,8 @@
 ﻿using Homely.Infrastructure.Identification.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace Homely.API.OptionsSetup;
+namespace Homely.Infrastructure.Identification.OptionsSetup;
 
 public class JwtOptionsSetup(IConfiguration configuration) : IConfigureOptions<JwtOptions>
 {
