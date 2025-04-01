@@ -7,13 +7,8 @@ using System.Reflection;
 
 namespace Homely.Infrastructure.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<User> Users { get; set; }
 
     public DbSet<Role> Roles { get; set; }
