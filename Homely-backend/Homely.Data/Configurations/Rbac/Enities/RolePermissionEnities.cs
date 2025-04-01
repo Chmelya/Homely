@@ -1,9 +1,4 @@
 ﻿using Homely.Domain.Entities.Rbac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Homely.Infrastructure.Data.Configurations.Rbac.Enities;
 
