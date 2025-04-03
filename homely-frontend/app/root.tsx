@@ -10,7 +10,7 @@ import {
 import type { Route } from './+types/root';
 import './app.css';
 import Header from './components/header/header';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import SideMenu from './components/sideMenu/sideMenu_draft';
 
 export const links: Route.LinksFunction = () => [
@@ -52,7 +52,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return <Outlet />;
+	return (
+		<Container>
+			<Outlet />
+		</Container>
+	);
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Homely.API.Controllers;
 
 [Authorization(allowAnonymus: true)]
+[Route("api/auth")]
 public class AuthenticationController(
     IJwtProvider authenticationService,
     IUserRepository userRepository

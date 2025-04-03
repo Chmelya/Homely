@@ -24,12 +24,14 @@ public sealed class JwtProvider(
 
         var claims = new List<Claim>()
         {
-            new (ClaimTypes.Email, user.Email),
+            new (HomelyClaims.UserId, user.Id.ToString()),
+            new (HomelyClaims.FullName, GetName(user)),
+            new (HomelyClaims.Email, user.Email),
         };
 
         var userPermissions = (await roleRepository.GetWithPermissionsAsync(r => r.Id == user.RoleId))
             ?.Permissions;
-        userPermissions?.ForEach(p => claims.Add(new(CustomClaims.Permissions, p.Name)));
+        userPermissions?.ForEach(p => claims.Add(new(HomelyClaims.Permissions, p.Name)));
 
         var credentials = new SigningCredentials(
             securityKey,
@@ -47,5 +49,13 @@ public sealed class JwtProvider(
             .WriteToken(token);
 
         return tokenValue;
+    }
+
+    private static string GetName(User user)
+    {
+        return user.FirstName
+            +
+            (user.MiddleName is not null ? " " + user.MiddleName : string.Empty)
+            + " " + user.LastName;
     }
 }

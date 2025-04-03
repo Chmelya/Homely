@@ -1,36 +1,50 @@
-import { Typography } from '@mui/material';
+import { Box, Button, MenuItem, Select, TextField } from '@mui/material';
 
 export const MainHub = () => {
 	return (
-		<>
-			<Typography sx={{ marginBottom: 2 }}>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
-				non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-				tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
-				tellus. Convallis convallis tellus id interdum velit laoreet id donec
-				ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
-				suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
-				quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
-				proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-				tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
-				varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
-				Lorem donec massa sapien faucibus et molestie ac.
-			</Typography>
-			<Typography sx={{ marginBottom: 2 }}>
-				Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-				ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-				integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-				lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-				Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-				vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-				accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-				Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-				senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-				Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-				maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-				aliquam ultrices sagittis orci a.
-			</Typography>
-		</>
+		<Box className='grid grid-cols-2 gap-4'>
+			<TextField className='col-span-full' label='Title' variant='outlined' />
+
+			<Select label='Urgency'>
+				<MenuItem value={10}>Ten</MenuItem>
+				<MenuItem value={20}>Twenty</MenuItem>
+				<MenuItem value={30}>Thirty</MenuItem>
+			</Select>
+
+			<Select label='Category'>
+				<MenuItem value={10}>Ten</MenuItem>
+				<MenuItem value={20}>Twenty</MenuItem>
+				<MenuItem value={30}>Thirty</MenuItem>
+			</Select>
+
+			<TextField
+				className='col-span-2'
+				label='Description'
+				variant='outlined'
+				multiline
+				maxRows={4}
+			/>
+
+			{/* TODO: file upload */}
+
+			<Box className='col-2 flex justify-end gap-2'>
+				<Button
+					size='large'
+					color='error'
+					className='min-w-10'
+					variant='outlined'
+				>
+					Cancel
+				</Button>
+				<Button
+					size='large'
+					color='success'
+					className='min-w-10'
+					variant='contained'
+				>
+					Send
+				</Button>
+			</Box>
+		</Box>
 	);
 };
