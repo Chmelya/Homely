@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Button, MenuItem, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Form from '~/components/form-components/form';
 import {
@@ -12,16 +12,18 @@ import type { ServiceRequest } from '~/models/service-request';
 import { useAppSelector } from '~/store/hooks/store-hooks';
 import { authSlice } from '~/store/auth/auth-slice';
 import FormSelectInput from '~/components/form-components/form-select-input';
-import { Urgency } from '~/models/urgency';
+import { defaultUrgency, Urgencies, UrgencyEnum } from '~/models/urgency';
+import { Categories } from '~/models/Categories';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '~/routes/paths';
 
 const CreateRequestPage = () => {
 	const userId = useAppSelector(authSlice.selectors.user)!.id;
+	const navigate = useNavigate();
 
 	const form = useForm<ServiceRequestValues>({
 		defaultValues: {
-			title: '',
-			description: '',
-			urgency: Urgency.Medium,
+			urgency: defaultUrgency,
 		},
 		resolver: zodResolver(serviceRequestValidationSchema),
 		mode: 'onTouched',
@@ -32,6 +34,8 @@ const CreateRequestPage = () => {
 		values.userId = userId;
 
 		await RequestsService.sendRequest(values);
+
+		navigate(ROUTES.main);
 	};
 
 	return (
@@ -44,16 +48,28 @@ const CreateRequestPage = () => {
 					variant='outlined'
 				/>
 
-				<FormSelectInput name='urgency' label='Urgency'>
-					{Object.keys(Urgency).map((u) => (
-						<MenuItem value={u}>{u}</MenuItem>
+				<FormSelectInput
+					labelId='label-urgency-id'
+					name='urgency'
+					label='Urgency'
+				>
+					{Urgencies.map((u) => (
+						<MenuItem key={u.key} value={u.key}>
+							{u.value}
+						</MenuItem>
 					))}
 				</FormSelectInput>
 
-				<FormSelectInput name='category' label='Category'>
-					<MenuItem value={10}>Ten</MenuItem>
-					<MenuItem value={20}>Twenty</MenuItem>
-					<MenuItem value={30}>Thirty</MenuItem>
+				<FormSelectInput
+					labelId='label-category-id'
+					name='category'
+					label='Category'
+				>
+					{Categories.map((c) => (
+						<MenuItem key={c.key} value={c.key}>
+							{c.value}
+						</MenuItem>
+					))}
 				</FormSelectInput>
 
 				<FormTextInput

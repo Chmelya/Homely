@@ -1,4 +1,4 @@
-import { Select } from '@mui/material';
+import { FormControl, InputLabel, Select } from '@mui/material';
 import { Controller, useFormContext, type FieldValues } from 'react-hook-form';
 
 //TODO: why work?
@@ -16,9 +16,12 @@ const FormSelectInput = (props: FormInputProps) => {
 				fieldState: { error },
 				formState,
 			}) => (
-				<Select {...props} error={!!error} onChange={onChange} value={value}>
-					{props.children}
-				</Select>
+				<FormControl>
+					<InputLabel id={props.labelId}>{props.label}</InputLabel>
+					<Select {...props} error={!!error} onChange={onChange} value={value}>
+						{props.children}
+					</Select>
+				</FormControl>
 			)}
 		/>
 	);
