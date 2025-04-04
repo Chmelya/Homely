@@ -15,7 +15,7 @@ internal class AuthorizationMiddleware(RequestDelegate next)
         {
             var requiredPermissions = attribute.Permissions;
 
-            var userPermissions = httpContext.User.Claims.Where(c => c.Type == CustomClaims.Permissions)
+            var userPermissions = httpContext.User.Claims.Where(c => c.Type == HomelyClaims.Permissions)
                 .Select(c => c.Value)
                 .ToList();
 
