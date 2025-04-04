@@ -4,9 +4,13 @@ import {
 	layout,
 	route,
 } from '@react-router/dev/routes';
+import { ROUTES } from './routes/paths';
 
 export default [
-	layout('./layouts/main-layout.tsx', [index('routes/mainPage.tsx')]),
+	layout('./layouts/main-layout.tsx', [
+		index('./pages/main/main.tsx'),
+		route(ROUTES.createRequest, './pages/create-request/create-request.tsx'),
+	]),
 
-	route('signin', './pages/sign-in-page/login-page.tsx'),
+	route(ROUTES.signIn, './pages/sign-in/login-page.tsx'),
 ] satisfies RouteConfig;
