@@ -9,9 +9,10 @@ import {
 
 import type { Route } from './+types/root';
 import './app.css';
-import Header from './components/header/header';
-import { Box, Container } from '@mui/material';
-import SideMenu from './components/sideMenu/sideMenu_draft';
+import Header from './components/app-bar/app-bar';
+import { Container } from '@mui/material';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -35,14 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Meta />
 				<Links />
 			</head>
-			<Header />
 			<body>
-				{/* <Box className={'flex'}>
-					<SideMenu />
-					<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-						{children}
-					</Box>
-				</Box> */}
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -53,9 +47,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
 	return (
-		<Container>
+		<Provider store={store}>
 			<Outlet />
-		</Container>
+		</Provider>
 	);
 }
 

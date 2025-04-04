@@ -1,3 +1,12 @@
-import { type RouteConfig, index } from '@react-router/dev/routes';
+import {
+	type RouteConfig,
+	index,
+	layout,
+	route,
+} from '@react-router/dev/routes';
 
-export default [index('routes/mainPage.tsx')] satisfies RouteConfig;
+export default [
+	layout('./layouts/main-layout.tsx', [index('routes/mainPage.tsx')]),
+
+	route('signin', './pages/sign-in-page/login-page.tsx'),
+] satisfies RouteConfig;

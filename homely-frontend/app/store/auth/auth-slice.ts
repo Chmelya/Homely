@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import type { AuthToken } from './auth-token';
 import type User from '~/models/user';
 import type { JwtHomelyPayload } from './jwt-payload';
+import { isAuthTokenValid } from './auth-util';
 
 export const STORAGE_AUTH_KEY = 'homely.credentials';
 
@@ -18,24 +19,28 @@ export const authSlice = createSlice({
 	name: 'auth',
 	initialState: initialState,
 	selectors: {
-		accessToken: (state) => state.authToken?.access_token,
+		authToken: (state) => state.authToken,
+		isAuthenticated: (state) => isAuthTokenValid(state.authToken),
+		user: (state) => state.user,
+		permissions: (state) => state.permissions,
 	},
 	reducers: {
 		signIn: (
 			state,
 			action: PayloadAction<{
 				accessToken: string;
-				expiresIn: number;
 			}>
 		) => {
-			const { accessToken, expiresIn } = action.payload;
-			const tokenExpiresInMls = (expiresIn - 30) * 1e3;
+			const { accessToken } = action.payload;
+
+			const accessTokenDecoded = jwtDecode<JwtHomelyPayload>(
+				action.payload.accessToken
+			);
+
 			state.authToken = {
 				access_token: accessToken,
-				expires: new Date(new Date().getTime() + tokenExpiresInMls).getTime(),
+				expires: accessTokenDecoded.exp! * 1000 - 30,
 			};
-
-			const accessTokenDecoded = jwtDecode<JwtHomelyPayload>(accessToken);
 
 			state.user = {
 				id: accessTokenDecoded.homely_user_id,

@@ -1,5 +1,9 @@
-import api from '../axios';
+import api from '../apiClient';
 
-export const getToken = async (email: string, password: string) => {
-	return await api.post('/auth/signin');
-};
+export class AuthService {
+	static signIn = async (email: string, password: string) => {
+		const res = await api.post('/auth/signin', { email, password });
+
+		return res.data;
+	};
+}

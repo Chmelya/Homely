@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^5.0.1",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
     "@react-router/node": "^7.4.1",
@@ -22,9 +23,11 @@
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.55.0",
     "react-redux": "^9.2.0",
     "react-router": "^7.4.1",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@react-router/dev": "^7.4.1",

@@ -33,6 +33,7 @@ export const MainHub = () => {
 					color='error'
 					className='min-w-10'
 					variant='outlined'
+					fullWidth
 				>
 					Cancel
 				</Button>
@@ -41,6 +42,7 @@ export const MainHub = () => {
 					color='success'
 					className='min-w-10'
 					variant='contained'
+					fullWidth
 				>
 					Send
 				</Button>
