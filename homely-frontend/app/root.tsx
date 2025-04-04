@@ -9,8 +9,6 @@ import {
 
 import type { Route } from './+types/root';
 import './app.css';
-import Header from './components/app-bar/app-bar';
-import { Container } from '@mui/material';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 
