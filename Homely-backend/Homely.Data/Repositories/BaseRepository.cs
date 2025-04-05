@@ -49,7 +49,7 @@ public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IB
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<TEntity?> FindAsync(
+    public async Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default)

@@ -1,6 +1,8 @@
-﻿using Homely.Application.Common.Interfaces.Repositories;
+﻿using ErrorOr;
+using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
-using Homely.Application.ServiceRequests;
+using Homely.Application.ServiceRequests.Requests;
+using Homely.Application.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Homely.Domain.Enums;
 
@@ -10,6 +12,34 @@ namespace Homely.Application.Common.Services
         IServiceRequestRepository requestRepository
         ) : IServiceRequestService
     {
+        public async Task<ErrorOr<ServiceRequestResponse>> GetRequest(
+            int requestId,
+            CancellationToken cancellationToken = default)
+        {
+            var request = await requestRepository.GetWithDetails
+                (r => r.Id == requestId,
+                isAsNoTracking: true,
+                cancellationToken: cancellationToken);
+
+            if (request is null)
+            {
+                return Error.NotFound(description: "Service request is not found");
+            }
+
+            var response = new ServiceRequestResponse()
+            {
+                Title = request.Title,
+                CreatorId = request.CreatorId,
+                AdministratorId = request.AdministratorId,
+                Status = (int)request.Status,
+                Urgency = (int)request.Urgency,
+                Category = (int)request.Category,
+                Description = request.Details.Description,
+            };
+
+            return response;
+        }
+
         public async Task CreateServiceRequestAsync(CreateServiceRequestRequest request)
         {
             var createdRequest = new ServiceRequest()
@@ -31,7 +61,7 @@ namespace Homely.Application.Common.Services
 
         public async Task UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request)
         {
-            var updatedRequest = await requestRepository.FindAsync(r => r.Id == requestId);
+            var updatedRequest = await requestRepository.GetAsync(r => r.Id == requestId);
 
             if (updatedRequest is null)
             {

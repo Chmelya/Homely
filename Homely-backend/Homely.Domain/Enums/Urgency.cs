@@ -10,8 +10,8 @@ public enum Urgency
     [Description("High")]
     High = 2,
 
-    [Description("Meduim")]
-    Meduim = 3,
+    [Description("Medium")]
+    Medium = 3,
 
     [Description("Low")]
     Low = 4,
