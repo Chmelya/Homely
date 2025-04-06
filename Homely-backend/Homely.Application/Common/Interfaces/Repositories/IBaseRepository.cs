@@ -23,5 +23,6 @@ public interface IBaseRepository<TEntity> where TEntity : Entity
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default);
 
-    List<TEntity> GetAllAsList(bool isAsNoTracking = false);
+    Task<List<TEntity>> GetAllAsList(bool isAsNoTracking = false,
+        CancellationToken cancellationToken = default);
 }

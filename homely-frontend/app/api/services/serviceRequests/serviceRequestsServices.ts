@@ -12,6 +12,13 @@ export class RequestsService {
 		return res.data;
 	};
 
+	static getPagedRequests = async (pageNumber: number, pageSize: number) => {
+		var res = await apiClient.get(
+			`/ServiceRequest/?pageNumber=${pageNumber}&pageSize=${pageSize}`
+		);
+		return res.data;
+	};
+
 	static editRequest = async (serviceRequest: ServiceRequest) => {
 		var res = await apiClient.patch(
 			`/ServiceRequest/${serviceRequest.requestId}`,

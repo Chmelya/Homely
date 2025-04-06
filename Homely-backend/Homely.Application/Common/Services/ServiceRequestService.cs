@@ -5,6 +5,7 @@ using Homely.Application.ServiceRequests.Requests;
 using Homely.Application.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Homely.Domain.Enums;
+using X.PagedList;
 
 namespace Homely.Application.Common.Services
 {
@@ -39,6 +40,26 @@ namespace Homely.Application.Common.Services
             };
 
             return response;
+        }
+
+        public async Task<IPagedList<ServiceRequestResponse>> GetRequests(
+            int pageNumber,
+            int pageSize,
+            CancellationToken cancellationToken = default)
+        {
+            //try
+            //{
+            var list = await requestRepository.GetPagedAsync(
+            pageNumber,
+            pageSize,
+            cancellationToken: cancellationToken);
+
+            return list;
+            //}
+            //catch (Exception)
+            //{
+            //    return Error.Failure(description: "Error during fetching service requests");
+            //}
         }
 
         public async Task<ErrorOr<Success>> CreateServiceRequestAsync(CreateServiceRequestRequest request)
