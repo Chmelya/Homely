@@ -1,5 +1,7 @@
 export interface ServiceRequest {
-	userId: number;
+	requestId: number;
+	creatorId: number;
+	administratorId: number;
 	title: string;
 	description?: string;
 	//TODO: To enum

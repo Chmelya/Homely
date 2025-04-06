@@ -2,6 +2,8 @@
 {
     public class ServiceRequestResponse
     {
+        public int RequestId { get; set; }
+
         public string Title { get; set; }
 
         public int CreatorId { get; set; }

@@ -6,9 +6,9 @@ namespace Homely.Application.Common.Interfaces.Services;
 
 public interface IServiceRequestService
 {
-    Task CreateServiceRequestAsync(CreateServiceRequestRequest request);
+    Task<ErrorOr<Success>> CreateServiceRequestAsync(CreateServiceRequestRequest request);
 
     Task<ErrorOr<ServiceRequestResponse>> GetRequest(int requestId, CancellationToken cancellationToken = default);
 
-    Task UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request);
+    Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request);
 }

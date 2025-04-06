@@ -28,6 +28,7 @@ namespace Homely.Application.Common.Services
 
             var response = new ServiceRequestResponse()
             {
+                RequestId = request.Id,
                 Title = request.Title,
                 CreatorId = request.CreatorId,
                 AdministratorId = request.AdministratorId,
@@ -40,43 +41,60 @@ namespace Homely.Application.Common.Services
             return response;
         }
 
-        public async Task CreateServiceRequestAsync(CreateServiceRequestRequest request)
+        public async Task<ErrorOr<Success>> CreateServiceRequestAsync(CreateServiceRequestRequest request)
         {
-            var createdRequest = new ServiceRequest()
+            try
             {
-                CreatorId = request.UserId,
-                Title = request.Title,
-                Urgency = request.Urgency,
-                Category = request.Category,
-                Status = RequestStatus.Created,
-                CreatedAt = DateTime.Now,
-                Details = new ServiceRequestDetails
+                var createdRequest = new ServiceRequest()
                 {
-                    Description = request.Description,
-                }
-            };
+                    CreatorId = request.CreatorId,
+                    Title = request.Title,
+                    Urgency = request.Urgency,
+                    Category = request.Category,
+                    Status = RequestStatus.Created,
+                    CreatedAt = DateTime.Now,
+                    Details = new ServiceRequestDetails
+                    {
+                        Description = request.Description,
+                    }
+                };
 
-            await requestRepository.AddAsync(createdRequest);
+                await requestRepository.AddAsync(createdRequest);
+
+                return await Task.FromResult(Result.Success);
+            }
+            catch (Exception)
+            {
+                return Error.Failure(description: "Error during create service request");
+            }
         }
 
-        public async Task UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request)
+        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request)
         {
-            var updatedRequest = await requestRepository.GetAsync(r => r.Id == requestId);
-
-            if (updatedRequest is null)
+            try
             {
-                throw new Exception("NotFound");
+                var updatedRequest = await requestRepository.GetWithDetails(r => r.Id == requestId);
+
+                if (updatedRequest is null)
+                {
+                    return Error.NotFound(description: "Service request is not found");
+                }
+
+                updatedRequest.Title = request.Title;
+                updatedRequest.Urgency = request.Urgency;
+                updatedRequest.Category = request.Category;
+                updatedRequest.Status = request.Status;
+
+                updatedRequest.Details.Description = request.Description;
+
+                await requestRepository.UpdateAsync(updatedRequest);
+
+                return await Task.FromResult(Result.Success);
             }
-
-            updatedRequest.CreatorId = request.UserId;
-            updatedRequest.Title = request.Title;
-            updatedRequest.Urgency = request.Urgency;
-            updatedRequest.Category = request.Category;
-            updatedRequest.Status = RequestStatus.Created;
-
-            updatedRequest.Details.Description = request.Description;
-
-            await requestRepository.UpdateAsync(updatedRequest);
+            catch (Exception)
+            {
+                return Error.Failure(description: "Error during update service request");
+            }
         }
     }
 }

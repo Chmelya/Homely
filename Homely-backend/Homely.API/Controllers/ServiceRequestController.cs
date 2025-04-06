@@ -1,4 +1,5 @@
-﻿using Homely.Application.Common.Interfaces.Services;
+﻿using Azure.Core;
+using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
@@ -21,7 +22,7 @@ namespace Homely.API.Controllers
         [HttpPatch("{requestId:int}", Name = "Edit single service request")]
         [Authorization(Permissions.RequestEdit)]
         public async Task<IActionResult> EditRequest(
-            [FromQuery] int requestId,
+            int requestId,
             [FromBody] UpdateServiceRequestRequest request)
         {
             await requestService.UpdateServiceRequestAsync(requestId, request);
@@ -29,10 +30,9 @@ namespace Homely.API.Controllers
             return Ok();
         }
 
-        [HttpGet("{requestId:int}", Name = "Edit single service request")]
+        [HttpGet("{requestId:int}", Name = "Get single service request")]
         [Authorization(Permissions.RequestEdit)]
-        public async Task<IActionResult> GetRequest(
-            [FromQuery] int requestId)
+        public async Task<IActionResult> GetRequest(int requestId)
         {
             var result = await requestService.GetRequest(requestId);
 

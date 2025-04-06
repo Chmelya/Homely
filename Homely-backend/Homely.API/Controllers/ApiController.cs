@@ -25,8 +25,9 @@ public abstract class ApiController : ControllerBase
 
     protected IActionResult Problem(Error error)
     {
+        //TODO: Refactor
         return Problem(
-            statusCode: error.NumericType,
+            statusCode: 500,
             detail: error.Description);
     }
 

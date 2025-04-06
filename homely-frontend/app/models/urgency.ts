@@ -10,6 +10,7 @@ export enum UrgencyEnum {
 
 export interface Urgency extends DropdownValue {}
 
+//TODO: Remove/Refactor
 export const Urgencies = Object.values(UrgencyEnum)
 	.filter((v) => typeof v === 'number')
 	.map((u) => {

@@ -7,6 +7,7 @@ export enum CategoryEnum {
 
 export interface Category extends DropdownValue {}
 
+//TODO: Remove/Refactor
 export const Categories = Object.values(CategoryEnum)
 	.filter((v) => typeof v === 'number')
 	.map((u) => {

@@ -1,41 +1,49 @@
-import { Box, Button, MenuItem, TextField } from '@mui/material';
+import { Box, Button, MenuItem } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Form from '~/components/form-components/form';
 import {
 	serviceRequestValidationSchema,
 	type ServiceRequestValues,
-} from './create-request.model';
+} from './edit-request.model';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormTextInput from '~/components/form-components/form-text-input';
 import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsServices';
 import type { ServiceRequest } from '~/models/service-request';
-import { useAppSelector } from '~/store/hooks/store-hooks';
-import { authSlice } from '~/store/auth/auth-slice';
 import FormSelectInput from '~/components/form-components/form-select-input';
-import { defaultUrgency, Urgencies } from '~/models/urgency';
-import { useNavigate } from 'react-router';
-import { ROUTES } from '~/routes/paths';
+import { Urgencies } from '~/models/urgency';
+import type { Route } from '../../+types/root';
 import { Categories } from '~/models/Categories';
 
-const CreateRequestPage = () => {
-	const userId = useAppSelector(authSlice.selectors.user)!.id;
-	const navigate = useNavigate();
+export async function clientLoader({ params }: Route.LoaderArgs) {
+	const request = await RequestsService.getRequest(Number(params.requestId!));
+	return request;
+}
+
+const EditRequestPage = ({ loaderData }: Route.ComponentProps) => {
+	if (loaderData === undefined) {
+		return null;
+	}
+
+	const request = loaderData as ServiceRequest;
 
 	const form = useForm<ServiceRequestValues>({
 		defaultValues: {
-			urgency: defaultUrgency,
+			title: request.title,
+			description: request.description,
+			category: request.category,
+			urgency: request.urgency,
 		},
 		resolver: zodResolver(serviceRequestValidationSchema),
 		mode: 'onTouched',
 	});
 
 	const submitHandler = async (formData: ServiceRequestValues) => {
-		const values = formData as ServiceRequest;
-		values.creatorId = userId;
+		request.title = formData.title;
+		request.description = formData.description;
+		request.category = formData.category;
+		request.urgency = formData.urgency;
 
-		await RequestsService.createRequest(values);
-
-		navigate(ROUTES.main);
+		RequestsService.editRequest(request);
 	};
 
 	return (
@@ -109,4 +117,4 @@ const CreateRequestPage = () => {
 	);
 };
 
-export default CreateRequestPage;
+export default EditRequestPage;
