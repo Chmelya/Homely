@@ -11,8 +11,8 @@ import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsS
 import type { ServiceRequest } from '~/models/service-request';
 import FormSelectInput from '~/components/form-components/form-select-input';
 import { Urgencies } from '~/models/urgency';
-import type { Route } from '../../+types/root';
-import { Categories } from '~/models/Categories';
+import type { Route } from '../../../+types/root';
+import { Categories } from '~/models/categories';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
 	const request = await RequestsService.getRequest(Number(params.requestId!));

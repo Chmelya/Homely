@@ -9,6 +9,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton } from '@mui/material';
+import { Link } from 'react-router';
+import { ROUTES } from '~/routes/paths';
 
 export default function SideMenu() {
 	const [open, setOpen] = React.useState(false);
@@ -20,16 +22,31 @@ export default function SideMenu() {
 	const DrawerList = (
 		<Box sx={{ width: 250 }} role='presentation' onClick={toggleDrawer(false)}>
 			<List>
-				{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-					<ListItem key={text} disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								<InboxIcon />
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
+				{/* TODO: Icons */}
+				<ListItem component={Link} to={ROUTES.main} disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<InboxIcon />
+						</ListItemIcon>
+						<ListItemText primary={'Hub'} />
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to={ROUTES.requestsMain()} disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<InboxIcon />
+						</ListItemIcon>
+						<ListItemText primary={'My requests'} />
+					</ListItemButton>
+				</ListItem>
+				<ListItem component={Link} to={ROUTES.createRequest()} disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<InboxIcon />
+						</ListItemIcon>
+						<ListItemText primary={'Create request'} />
+					</ListItemButton>
+				</ListItem>
 			</List>
 		</Box>
 	);

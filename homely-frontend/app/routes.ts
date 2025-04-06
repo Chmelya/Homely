@@ -12,13 +12,14 @@ export default [
 		index('./pages/main/main.tsx'),
 
 		...prefix(ROUTES.requestsPrefix, [
+			index('./pages/requests/requests-main/requests-main.tsx'),
 			route(
 				ROUTES.createRequestPath,
-				'./pages/create-request/create-request.tsx'
+				'./pages/requests/create-request/create-request.tsx'
 			),
 			route(
 				`${ROUTES.editRequestPath}/:requestId`,
-				'./pages/edit-request/edit-request.tsx'
+				'./pages/requests/edit-request/edit-request.tsx'
 			),
 		]),
 	]),

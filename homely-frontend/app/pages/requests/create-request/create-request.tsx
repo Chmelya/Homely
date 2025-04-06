@@ -15,7 +15,7 @@ import FormSelectInput from '~/components/form-components/form-select-input';
 import { defaultUrgency, Urgencies } from '~/models/urgency';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '~/routes/paths';
-import { Categories } from '~/models/Categories';
+import { Categories } from '~/models/categories';
 
 const CreateRequestPage = () => {
 	const userId = useAppSelector(authSlice.selectors.user)!.id;
