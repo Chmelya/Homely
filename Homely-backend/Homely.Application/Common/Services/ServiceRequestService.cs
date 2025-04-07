@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.ServiceRequests.Requests;
@@ -43,16 +44,12 @@ namespace Homely.Application.Common.Services
         }
 
         public async Task<IPagedList<ServiceRequestResponse>> GetRequests(
-            int pageNumber,
-            int pageSize,
+            ServiceRequestFilter filter,
             CancellationToken cancellationToken = default)
         {
             //try
             //{
-            var list = await requestRepository.GetPagedAsync(
-            pageNumber,
-            pageSize,
-            cancellationToken: cancellationToken);
+            var list = await requestRepository.GetPagedAsync(filter, cancellationToken: cancellationToken);
 
             return list;
             //}

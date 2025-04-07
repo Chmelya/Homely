@@ -1,4 +1,5 @@
-﻿using Homely.Application.Common.Interfaces.Services;
+﻿using Homely.Application.Common.Filters;
+using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
@@ -42,16 +43,26 @@ namespace Homely.API.Controllers
         [HttpGet(Name = "Get paged service requests")]
         [Authorization(Permissions.RequestRead)]
         public async Task<IActionResult> GetRequest(
-            //TODO: To constants, filters
             //TODO: ErrorOr resolve
             [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortColumn = null,
+            [FromQuery] string? sortOrder = null)
         {
-            var result = await requestService.GetRequests(pageNumber, pageSize);
+            var filter = new ServiceRequestFilter
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                SortColumn = sortColumn,
+                SortOrder = sortOrder
+            };
+
+            var result = await requestService.GetRequests(filter);
 
             var resultWithCount = new
             {
-                PageCount = result.PageCount,
+                result.PageCount,
+                result.PageNumber,
                 Items = result,
             };
 

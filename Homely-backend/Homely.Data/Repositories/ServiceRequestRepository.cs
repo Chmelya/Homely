@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+﻿using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
@@ -25,18 +25,13 @@ public class ServiceRequestRepository(ApplicationDbContext context)
     }
 
     public async Task<IPagedList<ServiceRequestResponse>> GetPagedAsync(
-        int pageNumber,
-        int pageSize,
-        Expression<Func<ServiceRequest, bool>>? predicate = null,
+        ServiceRequestFilter filter,
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default)
     {
         var query = GetAsSplitable(isAsNoTracking);
 
-        if (predicate is not null)
-        {
-            query = query.Where(predicate);
-        }
+        ApplyFilters(query, filter);
 
         var responseQuery = query.Select(request => new ServiceRequestResponse()
         {
@@ -49,8 +44,38 @@ public class ServiceRequestRepository(ApplicationDbContext context)
             Category = (int)request.Category
         });
 
-        var pagedList = await responseQuery.ToPagedListAsync(pageNumber, pageSize);
-        
+        var pagedList = await responseQuery.ToPagedListAsync(filter.PageNumber, filter.PageSize);
+
         return pagedList;
+    }
+
+    private static IQueryable<ServiceRequest> ApplyFilters(IQueryable<ServiceRequest> query, ServiceRequestFilter filter)
+    {
+        var orderSelector = GetOrderSelector(filter.SortColumn);
+
+        ApplySort(query, filter.SortOrder, orderSelector);
+
+        return query;
+    }
+
+    private static Expression<Func<ServiceRequest, object>> GetOrderSelector(string? sortColumn)
+    {
+        return sortColumn?.ToUpperInvariant() switch
+        {
+            FilterConstants.Date => request => request.CreatedAt,
+            FilterConstants.Urgency => request => request.Urgency,
+            FilterConstants.Category => request => request.Category,
+            FilterConstants.Status => request => request.Status,
+            FilterConstants.Title => request => request.Title,
+            _ => request => request.CreatedAt,
+        };
+    }
+
+    private static IQueryable<ServiceRequest> ApplySort(
+        IQueryable<ServiceRequest> query, string? sortOrder, Expression<Func<ServiceRequest, object>> orderSelector)
+    {
+        return sortOrder?.ToUpperInvariant() == FilterConstants.Descendant
+            ? query.OrderByDescending(orderSelector)
+            : query.OrderBy(orderSelector);
     }
 }
