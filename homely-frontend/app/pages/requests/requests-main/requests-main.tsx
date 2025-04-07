@@ -1,7 +1,7 @@
 import {
 	Box,
 	Chip,
-	ListItemButton,
+	IconButton,
 	Paper,
 	Table,
 	TableBody,
@@ -17,14 +17,15 @@ import HighIcon from '@mui/icons-material/ExpandLess';
 import MediumIcon from '@mui/icons-material/Remove';
 import LowIcon from '@mui/icons-material/ExpandMore';
 import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import EditIcon from '@mui/icons-material/Edit';
 import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsServices';
 import type { Route } from './+types/requests-main';
 import type { ServiceRequest } from '~/models/service-request';
-import { UrgencyEnum } from '~/models/urgency';
 import { CategoryEnum } from '~/models/categories';
 import { RequestStatuses, Urgencies, type Dictionary } from '~/models/pairs';
-import type React from 'react';
-import { useMemo, type ReactElement, type ReactNode } from 'react';
+import { useMemo, type ReactElement } from 'react';
+import { ROUTES } from '~/routes/paths';
+import { Link } from 'react-router';
 
 export async function clientLoader() {
 	const request = await RequestsService.getPagedRequests(1, 10);
@@ -62,7 +63,8 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 							<TableCell>Title</TableCell>
 							<TableCell align='center'>Status</TableCell>
 							<TableCell align='center'>Urgency</TableCell>
-							<TableCell align='right'>Category</TableCell>
+							<TableCell align='center'>Category</TableCell>
+							<TableCell align='right'></TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -77,8 +79,18 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 										{UrgencyIcons[req.urgency]}
 									</Tooltip>
 								</TableCell>
-								<TableCell align='right'>
+								<TableCell align='center'>
 									{CategoryEnum[req.category]}
+								</TableCell>
+								<TableCell align='right'>
+									<Tooltip title='Edit request' placement='left'>
+										<IconButton
+											component={Link}
+											to={ROUTES.editRequest(req.requestId)}
+										>
+											<EditIcon color='info' />
+										</IconButton>
+									</Tooltip>
 								</TableCell>
 							</TableRow>
 						))}
