@@ -4,4 +4,5 @@ export interface RequestsPaged {
 	items: ServiceRequest[];
 	pageCount: number;
 	pageNumber: number;
+	totalCount: number;
 }

@@ -3,14 +3,13 @@ import {
 	Chip,
 	Container,
 	IconButton,
-	Pagination,
-	PaginationItem,
 	Paper,
 	Table,
 	TableBody,
 	TableCell,
 	TableContainer,
 	TableHead,
+	TablePagination,
 	TableRow,
 	Tooltip,
 	Typography,
@@ -23,25 +22,24 @@ import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import EditIcon from '@mui/icons-material/Edit';
 import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsServices';
 import type { Route } from './+types/requests-main';
-import type { ServiceRequest } from '~/models/service-request';
 import { CategoryEnum } from '~/models/categories';
 import { RequestStatuses, Urgencies, type Dictionary } from '~/models/pairs';
 import { useMemo, type ReactElement } from 'react';
 import { ROUTES } from '~/routes/paths';
-import { Link } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
+
 import type { RequestsPaged } from '~/models/requestsList';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
-	// console.log(params);
+	//const [currentQueryParameters, setSearchParams] = useSearchParams();
+	//console.log(currentQueryParameters);
 
-	// const url = new URL(params.query);
-	// const pageNumber = url.searchParams.get('pageNumber');
-
-	const request = await RequestsService.getPagedRequests(
+	const data = await RequestsService.getPagedRequests(
 		Number(params.pageNumber),
 		10
 	);
-	return request;
+
+	return data;
 }
 
 const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
@@ -49,9 +47,9 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 		return null;
 	}
 
-	const data = loaderData as RequestsPaged;
+	const navigate = useNavigate();
 
-	const requests = data.items;
+	const data = loaderData as RequestsPaged;
 
 	const UrgencyIcons = useMemo(() => {
 		const urgencyIcons: Dictionary<ReactElement> = {};
@@ -91,7 +89,7 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{requests.map((req) => (
+						{data.items.map((req) => (
 							<TableRow>
 								<TableCell align='left'>{req.title}</TableCell>
 								<TableCell align='center'>
@@ -119,21 +117,20 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 						))}
 					</TableBody>
 				</Table>
-			</TableContainer>
-
-			<Container className='flex justify-center mt-6'>
-				<Pagination
-					count={data.pageCount}
-					page={data.pageNumber}
-					renderItem={(item) => (
-						<PaginationItem
-							component={Link}
-							to={ROUTES.requestsMain(Number(item.page))}
-							{...item}
-						/>
-					)}
+				<TablePagination
+					rowsPerPageOptions={[10]}
+					component='div'
+					count={data.totalCount}
+					rowsPerPage={10}
+					// backend paged list logic starts from 1
+					page={data.pageNumber - 1}
+					onPageChange={(event, value) => {
+						navigate(ROUTES.requestsMain(value + 1));
+					}}
+					// TODO
+					// onRowsPerPageChange={() => {}}
 				/>
-			</Container>
+			</TableContainer>
 		</Box>
 	);
 };

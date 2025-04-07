@@ -63,6 +63,7 @@ namespace Homely.API.Controllers
             {
                 result.PageCount,
                 result.PageNumber,
+                TotalCount = result.TotalItemCount,
                 Items = result,
             };
 
