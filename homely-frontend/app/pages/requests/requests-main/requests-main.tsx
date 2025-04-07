@@ -1,7 +1,10 @@
 import {
 	Box,
 	Chip,
+	Container,
 	IconButton,
+	Pagination,
+	PaginationItem,
 	Paper,
 	Table,
 	TableBody,
@@ -26,9 +29,18 @@ import { RequestStatuses, Urgencies, type Dictionary } from '~/models/pairs';
 import { useMemo, type ReactElement } from 'react';
 import { ROUTES } from '~/routes/paths';
 import { Link } from 'react-router';
+import type { RequestsPaged } from '~/models/requestsList';
 
-export async function clientLoader() {
-	const request = await RequestsService.getPagedRequests(1, 10);
+export async function clientLoader({ params }: Route.LoaderArgs) {
+	// console.log(params);
+
+	// const url = new URL(params.query);
+	// const pageNumber = url.searchParams.get('pageNumber');
+
+	const request = await RequestsService.getPagedRequests(
+		Number(params.pageNumber),
+		10
+	);
 	return request;
 }
 
@@ -37,7 +49,9 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 		return null;
 	}
 
-	const requests = loaderData.items as ServiceRequest[];
+	const data = loaderData as RequestsPaged;
+
+	const requests = data.items;
 
 	const UrgencyIcons = useMemo(() => {
 		const urgencyIcons: Dictionary<ReactElement> = {};
@@ -52,35 +66,44 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 
 	return (
 		<Box>
-			<Typography className='' variant='h4'>
-				My Requests
-			</Typography>
+			<Container className='flex justify-center mt-6'>
+				<Typography className='' variant='h4'>
+					My Requests
+				</Typography>
+			</Container>
 
-			<TableContainer component={Paper} elevation={3} className='px-2.5'>
-				<Table>
-					<TableHead className='bg-pink-400'>
+			<TableContainer component={Paper} elevation={3} className='px-2.5 mt-6'>
+				<Table size='small'>
+					<TableHead className='bg-pink-400 '>
 						<TableRow>
-							<TableCell>Title</TableCell>
-							<TableCell align='center'>Status</TableCell>
-							<TableCell align='center'>Urgency</TableCell>
+							<TableCell align='left' className='min-w-18'>
+								Title
+							</TableCell>
+							<TableCell align='center' width={90}>
+								Status
+							</TableCell>
+
 							<TableCell align='center'>Category</TableCell>
-							<TableCell align='right'></TableCell>
+							<TableCell align='center' width={90}>
+								Urgency
+							</TableCell>
+							<TableCell align='right' width={36}></TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{requests.map((req) => (
 							<TableRow>
-								<TableCell>{req.title}</TableCell>
+								<TableCell align='left'>{req.title}</TableCell>
 								<TableCell align='center'>
 									<Chip label={RequestStatuses[req.status]} color='default' />
 								</TableCell>
 								<TableCell align='center'>
+									{CategoryEnum[req.category]}
+								</TableCell>{' '}
+								<TableCell align='center'>
 									<Tooltip title={Urgencies[req.urgency]} placement='right'>
 										{UrgencyIcons[req.urgency]}
 									</Tooltip>
-								</TableCell>
-								<TableCell align='center'>
-									{CategoryEnum[req.category]}
 								</TableCell>
 								<TableCell align='right'>
 									<Tooltip title='Edit request' placement='left'>
@@ -97,6 +120,20 @@ const RequestsMainPage = ({ loaderData }: Route.ComponentProps) => {
 					</TableBody>
 				</Table>
 			</TableContainer>
+
+			<Container className='flex justify-center mt-6'>
+				<Pagination
+					count={data.pageCount}
+					page={data.pageNumber}
+					renderItem={(item) => (
+						<PaginationItem
+							component={Link}
+							to={ROUTES.requestsMain(Number(item.page))}
+							{...item}
+						/>
+					)}
+				/>
+			</Container>
 		</Box>
 	);
 };

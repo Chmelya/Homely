@@ -12,7 +12,7 @@ export default [
 		index('./pages/main/main.tsx'),
 
 		...prefix(ROUTES.requestsPrefix, [
-			index('./pages/requests/requests-main/requests-main.tsx'),
+			route(':pageNumber', './pages/requests/requests-main/requests-main.tsx'),
 			route(
 				ROUTES.createRequestPath,
 				'./pages/requests/create-request/create-request.tsx'

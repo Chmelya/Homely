@@ -21,14 +21,8 @@ import MediumIcon from '@mui/icons-material/Remove';
 import LowIcon from '@mui/icons-material/ExpandMore';
 import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import type { ReactNode } from 'react';
-import type { OverridableComponent } from '@mui/types';
-import type { SvgIconTypeMap } from '@mui/material';
 
-export const UrgencyIcons: Dictionary<
-	OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
-		muiName: string;
-	}
-> = {};
+export const UrgencyIcons: Dictionary<object> = {};
 UrgencyIcons['1'] = CriticalIcon;
 UrgencyIcons['2'] = HighIcon;
 UrgencyIcons['3'] = MediumIcon;
