@@ -5,9 +5,11 @@ export interface PaginatedResponse<T> {
 	totalCount: number;
 }
 
+export type SortOrder = 'asc' | 'desc';
+
 export interface SortRequestParams {
 	sortColumn?: string;
-	sortOrder?: 'asc' | 'desc';
+	sortOrder?: SortOrder;
 }
 
 export interface PaginatedRequestParams extends SortRequestParams {
