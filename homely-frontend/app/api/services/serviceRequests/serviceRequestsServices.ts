@@ -1,5 +1,9 @@
 import type { ServiceRequest } from '~/models/service-request';
 import apiClient from '../../apiClient';
+import type {
+	PaginatedRequestParams,
+	PaginatedResponse,
+} from '~/models/requestsList';
 
 export class RequestsService {
 	static createRequest = async (serviceRequest: ServiceRequest) => {
@@ -12,9 +16,12 @@ export class RequestsService {
 		return res.data;
 	};
 
-	static getPagedRequests = async (pageNumber: number, pageSize: number) => {
-		var res = await apiClient.get(
-			`/ServiceRequest/?pageNumber=${pageNumber}&pageSize=${pageSize}`
+	static getPagedRequestsParams = async (params: PaginatedRequestParams) => {
+		var res = await apiClient.get<PaginatedResponse<ServiceRequest>>(
+			`/ServiceRequest`,
+			{
+				params,
+			}
 		);
 		return res.data;
 	};

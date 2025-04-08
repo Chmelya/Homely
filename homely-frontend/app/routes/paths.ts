@@ -7,6 +7,8 @@ export const ROUTES = {
 	editRequestPath: '/edit',
 
 	requestsMain: (id: number) => `${ROUTES.requestsPrefix}/${id}`,
+	requestsMainParams: (params: string) =>
+		`${ROUTES.requestsPrefix}/sortedList?${params}`,
 	createRequest: () => `${ROUTES.requestsPrefix}${ROUTES.createRequestPath}`,
 	editRequest: (id: number) =>
 		`${ROUTES.requestsPrefix}${ROUTES.editRequestPath}/${id}`,

@@ -31,7 +31,11 @@ export default function SideMenu() {
 						<ListItemText primary={'Hub'} />
 					</ListItemButton>
 				</ListItem>
-				<ListItem component={Link} to={ROUTES.requestsMain(1)} disablePadding>
+				<ListItem
+					component={Link}
+					to={ROUTES.requestsMainParams('pageNumber=1&pageSize=10')}
+					disablePadding
+				>
 					<ListItemButton>
 						<ListItemIcon>
 							<InboxIcon />
