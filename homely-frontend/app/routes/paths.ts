@@ -6,9 +6,10 @@ export const ROUTES = {
 	createRequestPath: '/create',
 	editRequestPath: '/edit',
 
-	requestsMain: (id: number) => `${ROUTES.requestsPrefix}/${id}`,
-	requestsMainParams: (params: string) =>
+	requestsMain: (params: string) =>
 		`${ROUTES.requestsPrefix}/sortedList?${params}`,
+	requestsMainDefault: () =>
+		`${ROUTES.requestsPrefix}/sortedList?pageNumber=1&pageSize=10`,
 	createRequest: () => `${ROUTES.requestsPrefix}${ROUTES.createRequestPath}`,
 	editRequest: (id: number) =>
 		`${ROUTES.requestsPrefix}${ROUTES.editRequestPath}/${id}`,

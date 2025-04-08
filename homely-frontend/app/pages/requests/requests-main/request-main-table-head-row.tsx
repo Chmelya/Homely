@@ -55,7 +55,7 @@ const TableHeadRow = ({
 		searchParams.set('orderBy', id);
 		searchParams.set('sortOrder', sortOrderNew);
 
-		navigate(ROUTES.requestsMainParams(searchParams.toString()));
+		navigate(ROUTES.requestsMain(searchParams.toString()));
 	};
 
 	return (

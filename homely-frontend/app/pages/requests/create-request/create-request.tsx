@@ -16,10 +16,12 @@ import { defaultUrgency, Urgencies } from '~/models/urgency';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '~/routes/paths';
 import { Categories } from '~/models/categories';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const CreateRequestPage = () => {
 	const userId = useAppSelector(authSlice.selectors.user)!.id;
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const form = useForm<ServiceRequestValues>({
 		defaultValues: {
@@ -29,13 +31,26 @@ const CreateRequestPage = () => {
 		mode: 'onTouched',
 	});
 
+	const { isPending, mutate } = useMutation({
+		mutationKey: ['requests', 'create'],
+		mutationFn: RequestsService.createRequest,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['requests'],
+			});
+			navigate(ROUTES.requestsMainDefault());
+		},
+	});
+
 	const submitHandler = async (formData: ServiceRequestValues) => {
 		const values = formData as ServiceRequest;
 		values.creatorId = userId;
 
-		await RequestsService.createRequest(values);
+		mutate(values);
+	};
 
-		navigate(ROUTES.main);
+	const cancelHandler = () => {
+		navigate(-1);
 	};
 
 	return (
@@ -90,6 +105,9 @@ const CreateRequestPage = () => {
 						className='min-w-10'
 						variant='outlined'
 						fullWidth
+						disabled={isPending}
+						loading={isPending}
+						onClick={cancelHandler}
 					>
 						Cancel
 					</Button>
@@ -100,6 +118,8 @@ const CreateRequestPage = () => {
 						variant='contained'
 						type='submit'
 						fullWidth
+						disabled={isPending}
+						loading={isPending}
 					>
 						Send
 					</Button>

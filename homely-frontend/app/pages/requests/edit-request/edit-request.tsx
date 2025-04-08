@@ -13,6 +13,9 @@ import FormSelectInput from '~/components/form-components/form-select-input';
 import { Urgencies } from '~/models/urgency';
 import type { Route } from '../../../+types/root';
 import { Categories } from '~/models/categories';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '~/routes/paths';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
 	const request = await RequestsService.getRequest(Number(params.requestId!));
@@ -25,6 +28,8 @@ const EditRequestPage = ({ loaderData }: Route.ComponentProps) => {
 	}
 
 	const request = loaderData as ServiceRequest;
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const form = useForm<ServiceRequestValues>({
 		defaultValues: {
@@ -37,13 +42,28 @@ const EditRequestPage = ({ loaderData }: Route.ComponentProps) => {
 		mode: 'onTouched',
 	});
 
-	const submitHandler = async (formData: ServiceRequestValues) => {
+	const { isPending, mutate } = useMutation({
+		mutationKey: ['requests', 'edit'],
+		mutationFn: RequestsService.editRequest,
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['requests'],
+			});
+			navigate(-1);
+		},
+	});
+
+	const submitHandler = (formData: ServiceRequestValues) => {
 		request.title = formData.title;
 		request.description = formData.description;
 		request.category = formData.category;
 		request.urgency = formData.urgency;
 
-		RequestsService.editRequest(request);
+		mutate(request);
+	};
+
+	const cancelHandler = () => {
+		navigate(-1);
 	};
 
 	return (
@@ -98,6 +118,9 @@ const EditRequestPage = ({ loaderData }: Route.ComponentProps) => {
 						className='min-w-10'
 						variant='outlined'
 						fullWidth
+						disabled={isPending}
+						loading={isPending}
+						onClick={cancelHandler}
 					>
 						Cancel
 					</Button>
@@ -108,6 +131,8 @@ const EditRequestPage = ({ loaderData }: Route.ComponentProps) => {
 						variant='contained'
 						type='submit'
 						fullWidth
+						disabled={isPending}
+						loading={isPending}
 					>
 						Send
 					</Button>

@@ -33,7 +33,7 @@ export default function SideMenu() {
 				</ListItem>
 				<ListItem
 					component={Link}
-					to={ROUTES.requestsMainParams('pageNumber=1&pageSize=10')}
+					to={ROUTES.requestsMainDefault()}
 					disablePadding
 				>
 					<ListItemButton>
