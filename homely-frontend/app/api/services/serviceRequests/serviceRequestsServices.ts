@@ -7,18 +7,20 @@ import type {
 
 export class RequestsService {
 	static createRequest = async (serviceRequest: ServiceRequest) => {
-		var res = await apiClient.post('/ServiceRequest', serviceRequest);
+		var res = await apiClient.post('/serviceRequest', serviceRequest);
 		return res;
 	};
 
 	static getRequest = async (requestId: number) => {
-		var res = await apiClient.get(`/ServiceRequest/${requestId}`);
+		var res = await apiClient.get<ServiceRequest>(
+			`/serviceRequest/${requestId}`
+		);
 		return res.data;
 	};
 
-	static getPagedRequestsParams = async (params: PaginatedRequestParams) => {
+	static getSortedRequests = async (params: PaginatedRequestParams) => {
 		var res = await apiClient.get<PaginatedResponse<ServiceRequest>>(
-			`/ServiceRequest`,
+			`/serviceRequest/sortedList`,
 			{
 				params,
 			}

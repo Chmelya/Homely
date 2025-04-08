@@ -5,7 +5,8 @@ export const serviceRequestValidationSchema = z.object({
 	description: z
 		.string()
 		.max(140, { message: 'Description limit is 140' })
-		.optional(),
+		.optional()
+		.nullable(),
 	urgency: z.number(),
 	category: z.number(),
 });

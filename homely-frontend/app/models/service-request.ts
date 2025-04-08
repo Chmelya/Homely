@@ -3,7 +3,7 @@ export interface ServiceRequest {
 	creatorId: number;
 	administratorId: number;
 	title: string;
-	description?: string;
+	description?: string | null;
 	//TODO: To enum
 	urgency: number;
 	category: number;

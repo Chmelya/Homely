@@ -15,11 +15,11 @@ export default [
 			route(':query', './pages/requests/requests-main/requests-main.tsx'),
 			route(
 				ROUTES.createRequestPath,
-				'./pages/requests/create-request/create-request.tsx'
+				'./pages/requests/requests-form/create-request/create-request.tsx'
 			),
 			route(
 				`${ROUTES.editRequestPath}/:requestId`,
-				'./pages/requests/edit-request/edit-request.tsx'
+				'./pages/requests/requests-form/edit-request/edit-request.tsx'
 			),
 		]),
 	]),

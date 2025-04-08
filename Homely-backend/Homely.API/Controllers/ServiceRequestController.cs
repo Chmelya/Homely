@@ -40,7 +40,7 @@ namespace Homely.API.Controllers
             return result.Match(Ok, Problem);
         }
 
-        [HttpGet(Name = "Get paged service requests")]
+        [HttpGet("sortedList", Name = "Get paged service requests")]
         [Authorization(Permissions.RequestRead)]
         public async Task<IActionResult> GetRequest(
             //TODO: ErrorOr resolve

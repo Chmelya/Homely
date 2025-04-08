@@ -38,7 +38,7 @@ export const useSortedRequests = () => {
 
 	const { data, isPending } = useQuery({
 		queryKey: ['requests', 'sortedList', parameters],
-		queryFn: () => RequestsService.getPagedRequestsParams(parameters),
+		queryFn: () => RequestsService.getSortedRequests(parameters),
 	});
 
 	return { data, isPending, searchParams, orderBy, sortOrder };
