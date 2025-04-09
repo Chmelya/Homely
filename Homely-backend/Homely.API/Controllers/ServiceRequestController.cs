@@ -1,6 +1,6 @@
 ﻿using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Services;
-using Homely.Application.ServiceRequests.Requests;
+using Homely.Application.Models.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +67,15 @@ namespace Homely.API.Controllers
             };
 
             return Ok(resultWithCount);
+        }
+
+        [HttpGet("options", Name = "Get service request options")]
+        [Authorization(Permissions.RequestRead)]
+        public IActionResult GetOptions()
+        {
+            var result = requestService.GetOptions();
+
+            return result.Match(Ok, Problem);
         }
     }
 }

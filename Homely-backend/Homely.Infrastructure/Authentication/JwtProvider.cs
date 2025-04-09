@@ -27,6 +27,7 @@ public sealed class JwtProvider(
             new (HomelyClaims.UserId, user.Id.ToString()),
             new (HomelyClaims.FullName, GetName(user)),
             new (HomelyClaims.Email, user.Email),
+            new (HomelyClaims.Role, user.Role.Name),
         };
 
         var userPermissions = (await roleRepository.GetWithPermissionsAsync(r => r.Id == user.RoleId))

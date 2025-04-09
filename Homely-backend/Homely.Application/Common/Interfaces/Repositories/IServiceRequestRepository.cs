@@ -1,5 +1,5 @@
 ﻿using Homely.Application.Common.Filters;
-using Homely.Application.ServiceRequests.Response;
+using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using System.Linq.Expressions;
 using X.PagedList;
