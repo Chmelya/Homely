@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Paper, Stack } from '@mui/material';
+import { Alert, Box, Button, Container, Paper, Stack } from '@mui/material';
 import { AuthService } from '~/api/services/authService';
 import { useDispatch } from 'react-redux';
 import { authSlice } from '~/store/auth/auth-slice';
@@ -49,24 +49,27 @@ const LoginPage = () => {
 	};
 
 	return (
-		<Container className='mt-20'>
-			<Form form={form} submitHandler={submitHandler}>
-				<Paper elevation={10}>
-					<Container className='px-20 py-10'>
-						<Stack direction='column' gap={1}>
-							<FormTextInput name='email' label='Login' />
-							<FormTextInput name='password' label='Password' type='password' />
-							{error && (
-								<Alert severity='error'>{getApiErrorMessage(error)}</Alert>
-							)}
-							<Button disabled={isPending} loading={isPending} type='submit'>
-								Sign in
-							</Button>
-						</Stack>
-					</Container>
-				</Paper>
-			</Form>
-		</Container>
+		<Box className=' h-screen flex items-center justify-center '>
+			<Paper elevation={10} className='p-10 min-w-120'>
+				<Form form={form} submitHandler={submitHandler}>
+					<Stack direction='column' gap={2}>
+						<FormTextInput name='email' label='Login' />
+						<FormTextInput name='password' label='Password' type='password' />
+						{error && (
+							<Alert severity='error'>{getApiErrorMessage(error)}</Alert>
+						)}
+						<Button
+							disabled={isPending}
+							loading={isPending}
+							variant='contained'
+							type='submit'
+						>
+							Sign in
+						</Button>
+					</Stack>
+				</Form>
+			</Paper>
+		</Box>
 	);
 };
 
