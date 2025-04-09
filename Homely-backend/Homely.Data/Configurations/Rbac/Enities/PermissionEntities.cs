@@ -23,12 +23,19 @@ internal static class PermissionEntities
         Name = Permissions.RequestEdit,
     };
 
+    public static Permission RequestEditOnlyOwner = new()
+    {
+        Id = 4,
+        Name = Permissions.RequestEditOnlyOwner,
+    };
+
     public static List<Permission> AdminPermissions = GetAllPermissions();
 
     public static List<Permission> ResidentPermissions =
     [
         RequestWrite,
-        RequestRead
+        RequestRead,
+        RequestEditOnlyOwner
     ];
 
     public static List<Permission> GetAllPermissions()
