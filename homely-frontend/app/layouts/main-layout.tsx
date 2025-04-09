@@ -7,7 +7,7 @@ const MainLayout = () => {
 	return (
 		<Authorized>
 			<AppBar />
-			<Container>
+			<Container className='mt-20'>
 				<Outlet />
 			</Container>
 		</Authorized>

@@ -6,6 +6,7 @@ import { Categories } from '~/models/categories';
 import { Urgencies } from '~/models/urgency';
 import type { ServiceRequestValues } from './edit-request/edit-request.model';
 import Form from '~/components/form-components/form';
+import CancelRequest from './request-form-cancel';
 
 const RequestForm = ({
 	form,
@@ -63,19 +64,11 @@ const RequestForm = ({
 
 				{/* TODO: file upload */}
 
-				<Box className='col-2 flex justify-end gap-2'>
-					<Button
-						size='large'
-						color='error'
-						className='min-w-10'
-						variant='outlined'
-						fullWidth
-						disabled={isButtonsInactive}
-						loading={isButtonsInactive}
-						onClick={cancelHandler}
-					>
-						Cancel
-					</Button>
+				<Box className='col-2 flex justify-end gap-2 mt-20'>
+					<CancelRequest
+						isButtonsInactive={isButtonsInactive}
+						cancelHandler={cancelHandler}
+					/>
 					<Button
 						size='large'
 						color='success'
