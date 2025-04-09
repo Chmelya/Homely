@@ -1,4 +1,5 @@
-﻿using Homely.Application.Common.Interfaces.Services;
+﻿using Homely.API.Extensions.Middleware;
+using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.Common.Services;
 using Homely.Infrastructure.Data;
 using Homely.Infrastructure.Identification;
@@ -58,6 +59,8 @@ internal static class ApiConfigurator
         }
 
         app.EnsureDbMigration();
+
+        app.AddExceptionHandler();
 
         app.UseHttpsRedirection();
         app.UseCors();

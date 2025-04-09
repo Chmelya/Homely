@@ -1,4 +1,4 @@
-﻿namespace Homely.Application.ServiceRequests.Response
+﻿namespace Homely.Application.Models.ServiceRequests.Response
 {
     public class ServiceRequestResponse
     {

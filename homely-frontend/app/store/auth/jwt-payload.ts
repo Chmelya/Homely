@@ -5,4 +5,5 @@ export type JwtHomelyPayload = JwtPayload & {
 	homely_full_name: string;
 	homely_email: string;
 	homely_permissions: string[];
+	homely_role: string;
 };

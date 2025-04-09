@@ -1,6 +1,6 @@
 ﻿using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Repositories;
-using Homely.Application.ServiceRequests.Response;
+using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -51,6 +51,12 @@ public class ServiceRequestRepository(ApplicationDbContext context)
 
     private static IQueryable<ServiceRequest> ApplyFilters(IQueryable<ServiceRequest> query, ServiceRequestFilter filter)
     {
+        if (filter.SortColumn is null
+           && filter.SortOrder is null)
+        {
+            return query.OrderByDescending(sr => sr.CreatedAt);
+        }
+
         var orderSelector = GetOrderSelector(filter.SortColumn);
 
         query = ApplySort(query, filter.SortOrder, orderSelector);

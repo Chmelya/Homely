@@ -1,6 +1,6 @@
 ﻿using Homely.Domain.Enums;
 
-namespace Homely.Application.ServiceRequests.Requests
+namespace Homely.Application.Models.ServiceRequests.Requests
 {
     public sealed class UpdateServiceRequestRequest : BaseServiceRequestRequest
     {

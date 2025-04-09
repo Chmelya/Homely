@@ -6,4 +6,5 @@ public class HomelyClaims
     public const string FullName = "homely_full_name";
     public const string Email = "homely_email";
     public const string Permissions = "homely_permissions";
+    public const string Role = "homely_role";
 }

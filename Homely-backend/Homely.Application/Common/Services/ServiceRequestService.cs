@@ -1,9 +1,11 @@
 ﻿using ErrorOr;
 using Homely.Application.Common.Filters;
+using Homely.Application.Common.HelperModels;
 using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
-using Homely.Application.ServiceRequests.Requests;
-using Homely.Application.ServiceRequests.Response;
+using Homely.Application.Extensions;
+using Homely.Application.Models.ServiceRequests.Requests;
+using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Homely.Domain.Enums;
 using X.PagedList;
@@ -47,16 +49,18 @@ namespace Homely.Application.Common.Services
             ServiceRequestFilter filter,
             CancellationToken cancellationToken = default)
         {
-            //try
-            //{
-            var list = await requestRepository.GetPagedAsync(filter, cancellationToken: cancellationToken);
+            try
+            {
+                var list = await requestRepository.GetPagedAsync(filter, cancellationToken: cancellationToken);
 
-            return list;
-            //}
-            //catch (Exception)
-            //{
-            //    return Error.Failure(description: "Error during fetching service requests");
-            //}
+                return list;
+            }
+            catch (Exception)
+            {
+                //TODO: ErrorOr resolve
+                //return Error.Failure(description: "Error during fetching service requests");
+                throw new InvalidOperationException("Error during fetching service requests");
+            }
         }
 
         public async Task<ErrorOr<Success>> CreateServiceRequestAsync(CreateServiceRequestRequest request)
@@ -87,7 +91,7 @@ namespace Homely.Application.Common.Services
             }
         }
 
-        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request)
+        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isOwnMode, int? userId = null)
         {
             try
             {
@@ -96,6 +100,11 @@ namespace Homely.Application.Common.Services
                 if (updatedRequest is null)
                 {
                     return Error.NotFound(description: "Service request is not found");
+                }
+
+                if (isOwnMode && updatedRequest.CreatorId != userId)
+                {
+                    return Error.Forbidden(description: "You can edit only own requests");
                 }
 
                 updatedRequest.Title = request.Title;
@@ -112,6 +121,39 @@ namespace Homely.Application.Common.Services
             catch (Exception)
             {
                 return Error.Failure(description: "Error during update service request");
+            }
+        }
+
+        public ErrorOr<ServiceRequestOptionsResponse> GetOptions()
+        {
+            try
+            {
+                //TODO: Refactor
+                var categoreis = Enum.GetValues(typeof(Category))
+                    .Cast<Category>()
+                    .Select(category => new DropdownValue { Key = (int)category, Value = category.GetDescription() })
+                    .ToList();
+
+                var urgencies = Enum.GetValues(typeof(Urgency))
+                   .Cast<Urgency>()
+                   .Select(urgency => new DropdownValue { Key = (int)urgency, Value = urgency.GetDescription() })
+                   .ToList();
+
+                var statues = Enum.GetValues(typeof(RequestStatus))
+                   .Cast<RequestStatus>()
+                   .Select(urgency => new DropdownValue { Key = (int)urgency, Value = urgency.GetDescription() })
+                   .ToList();
+
+                return new ServiceRequestOptionsResponse
+                {
+                    Categories = categoreis,
+                    Urgencies = urgencies,
+                    Statuses = statues
+                };
+            }
+            catch (Exception)
+            {
+                return Error.Failure(description: "Error during getting service request options");
             }
         }
     }
