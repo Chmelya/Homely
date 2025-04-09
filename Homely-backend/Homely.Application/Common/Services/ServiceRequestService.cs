@@ -91,7 +91,7 @@ namespace Homely.Application.Common.Services
             }
         }
 
-        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request)
+        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isOwnMode, int? userId = null)
         {
             try
             {
@@ -100,6 +100,11 @@ namespace Homely.Application.Common.Services
                 if (updatedRequest is null)
                 {
                     return Error.NotFound(description: "Service request is not found");
+                }
+
+                if (isOwnMode && updatedRequest.CreatorId != userId)
+                {
+                    return Error.Forbidden(description: "You can edit only own requests");
                 }
 
                 updatedRequest.Title = request.Title;

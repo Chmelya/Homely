@@ -3,6 +3,7 @@ using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.Models.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
+using Homely.Infrastructure.Identification.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homely.API.Controllers
@@ -25,7 +26,20 @@ namespace Homely.API.Controllers
             int requestId,
             [FromBody] UpdateServiceRequestRequest request)
         {
-            var result = await requestService.UpdateServiceRequestAsync(requestId, request);
+            var result = await requestService.UpdateServiceRequestAsync(requestId, request, isOwnMode: false);
+
+            return result.Match(_ => Ok(), Problem);
+        }
+
+        [HttpPatch("{requestId:int}/owner", Name = "Edit single service for owner only request")]
+        [Authorization(Permissions.RequestEditOnlyOwner)]
+        public async Task<IActionResult> EditOwnRequest(
+            int requestId,
+            [FromBody] UpdateServiceRequestRequest request)
+        {
+            int.TryParse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == HomelyClaims.UserId)!.Value, out int userId);
+
+            var result = await requestService.UpdateServiceRequestAsync(requestId, request, isOwnMode: true, userId);
 
             return result.Match(_ => Ok(), Problem);
         }
