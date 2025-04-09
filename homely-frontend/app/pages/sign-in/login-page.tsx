@@ -1,4 +1,4 @@
-import { Button, Container, Paper, Stack } from '@mui/material';
+import { Alert, Button, Container, Paper, Stack } from '@mui/material';
 import { AuthService } from '~/api/services/authService';
 import { useDispatch } from 'react-redux';
 import { authSlice } from '~/store/auth/auth-slice';
@@ -12,6 +12,8 @@ import FormTextInput from '~/components/form-components/form-text-input';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '~/routes/paths';
 import Form from '~/components/form-components/form';
+import { useMutation } from '@tanstack/react-query';
+import { getApiErrorMessage } from '~/api/errors.util';
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -19,7 +21,7 @@ const LoginPage = () => {
 	const form = useForm<LoginFormValues>({
 		defaultValues: {
 			// TODO: Remove, was added fo tests purpose
-			email: 'ewr@mail.com',
+			email: '',
 			password: '',
 		},
 		resolver: zodResolver(loginFormValidationSchema),
@@ -27,16 +29,23 @@ const LoginPage = () => {
 	});
 
 	const dispatch = useDispatch();
+
+	const { isPending, mutate, error } = useMutation({
+		mutationKey: ['auth', 'login'],
+		mutationFn: AuthService.signIn,
+		onSuccess: (response) => {
+			dispatch(
+				authSlice.actions.signIn({
+					accessToken: response,
+				})
+			);
+
+			navigate(ROUTES.main);
+		},
+	});
+
 	const submitHandler = async (values: LoginFormValues) => {
-		const token = await AuthService.signIn(values.email, values.password);
-
-		dispatch(
-			authSlice.actions.signIn({
-				accessToken: token,
-			})
-		);
-
-		navigate(ROUTES.main);
+		mutate({ email: values.email, password: values.password });
 	};
 
 	return (
@@ -47,7 +56,12 @@ const LoginPage = () => {
 						<Stack direction='column' gap={1}>
 							<FormTextInput name='email' label='Login' />
 							<FormTextInput name='password' label='Password' type='password' />
-							<Button type='submit'>Sign in</Button>
+							{error && (
+								<Alert severity='error'>{getApiErrorMessage(error)}</Alert>
+							)}
+							<Button disabled={isPending} loading={isPending} type='submit'>
+								Sign in
+							</Button>
 						</Stack>
 					</Container>
 				</Paper>

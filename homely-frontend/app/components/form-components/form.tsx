@@ -20,11 +20,9 @@ const Form = <T extends FieldValues>({
 	className,
 }: FormProps<T>) => {
 	return (
-		<Box className={className}>
-			<FormProvider {...form}>
-				<form onSubmit={form.handleSubmit(submitHandler)}>{children}</form>
-			</FormProvider>
-		</Box>
+		<FormProvider {...form}>
+			<form onSubmit={form.handleSubmit(submitHandler)}>{children}</form>
+		</FormProvider>
 	);
 };
 

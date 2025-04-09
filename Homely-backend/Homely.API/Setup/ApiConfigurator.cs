@@ -21,12 +21,15 @@ internal static class ApiConfigurator
         builder.Services.AddRepositories(connection);
 
         builder.Services.AddScoped<IServiceRequestService, ServiceRequestService>();
+        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
         builder.Services.AddSwaggerGen(options =>
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = @"JWT Authorization header using the Bearer scheme. Enter 'Bearer ' (with space) and then your token in the text input below. Example: 'Bearer 990011abcxyz'.",
+                Description = @"JWT Authorization header using the Bearer scheme.
+Enter 'Bearer ' (with space) and then your token in the text input below.
+Example: 'Bearer 1234ABCD'.",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
