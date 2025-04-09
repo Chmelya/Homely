@@ -3,7 +3,7 @@ using Homely.Application.Common.Services;
 using Homely.Infrastructure.Data;
 using Homely.Infrastructure.Identification;
 using Microsoft.EntityFrameworkCore;
-using Scalar.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 namespace Homely.API.Setup;
 
@@ -21,6 +21,31 @@ internal static class ApiConfigurator
 
         builder.Services.AddScoped<IServiceRequestService, ServiceRequestService>();
 
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = @"JWT Authorization header using the Bearer scheme. Enter 'Bearer ' (with space) and then your token in the text input below. Example: 'Bearer 990011abcxyz'.",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference {Type = ReferenceType.SecurityScheme, Id = "Bearer"},
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+                    },
+                    new List<string>()
+                },
+            });
+        });
+
         return builder;
     }
 
@@ -28,8 +53,8 @@ internal static class ApiConfigurator
     {
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
-            app.MapScalarApiReference();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         app.EnsureDbMigration();

@@ -4,7 +4,6 @@ using Homely.Application.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using X.PagedList.Extensions;
 
 namespace Homely.API.Controllers
 {
