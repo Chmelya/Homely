@@ -47,16 +47,18 @@ namespace Homely.Application.Common.Services
             ServiceRequestFilter filter,
             CancellationToken cancellationToken = default)
         {
-            //try
-            //{
-            var list = await requestRepository.GetPagedAsync(filter, cancellationToken: cancellationToken);
+            try
+            {
+                var list = await requestRepository.GetPagedAsync(filter, cancellationToken: cancellationToken);
 
-            return list;
-            //}
-            //catch (Exception)
-            //{
-            //    return Error.Failure(description: "Error during fetching service requests");
-            //}
+                return list;
+            }
+            catch (Exception)
+            {
+                //TODO: ErrorOr resolve
+                //return Error.Failure(description: "Error during fetching service requests");
+                throw new InvalidOperationException("Error during fetching service requests");
+            }
         }
 
         public async Task<ErrorOr<Success>> CreateServiceRequestAsync(CreateServiceRequestRequest request)
