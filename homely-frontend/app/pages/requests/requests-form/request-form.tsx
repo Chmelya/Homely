@@ -42,11 +42,11 @@ const RequestForm = ({
 	return (
 		<>
 			<Typography variant='h6' className='flex justify-center-safe'>
-				{isEditMode ? 'Request edit' : 'Create Request'}{' '}
+				{isEditMode ? 'Request edit' : 'Create Request'}
 			</Typography>
 
-			<Form className='mt-10' form={form} submitHandler={submitHandler}>
-				<Box className='grid grid-cols-4 gap-4'>
+			<Form form={form} submitHandler={submitHandler}>
+				<Box className='grid grid-cols-4 gap-4 mt-10'>
 					<FormTextInput
 						name={'title'}
 						className='col-span-2'
@@ -90,7 +90,7 @@ const RequestForm = ({
 
 					{/* TODO: file upload */}
 
-					<Box className='col-4 flex justify-end gap-2 mt-20'>
+					<Box className='col-span-4 flex justify-end gap-2 mt-20'>
 						<CancelRequest
 							isButtonsInactive={isButtonsInactive}
 							cancelHandler={cancelHandler}
