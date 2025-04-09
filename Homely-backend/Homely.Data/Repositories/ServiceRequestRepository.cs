@@ -31,7 +31,7 @@ public class ServiceRequestRepository(ApplicationDbContext context)
     {
         var query = GetAsSplitable(isAsNoTracking);
 
-        ApplyFilters(query, filter);
+        query = ApplyFilters(query, filter);
 
         var responseQuery = query.Select(request => new ServiceRequestResponse()
         {
@@ -53,7 +53,7 @@ public class ServiceRequestRepository(ApplicationDbContext context)
     {
         var orderSelector = GetOrderSelector(filter.SortColumn);
 
-        ApplySort(query, filter.SortOrder, orderSelector);
+        query = ApplySort(query, filter.SortOrder, orderSelector);
 
         return query;
     }
@@ -74,8 +74,11 @@ public class ServiceRequestRepository(ApplicationDbContext context)
     private static IQueryable<ServiceRequest> ApplySort(
         IQueryable<ServiceRequest> query, string? sortOrder, Expression<Func<ServiceRequest, object>> orderSelector)
     {
-        return sortOrder?.ToUpperInvariant() == FilterConstants.Descendant
-            ? query.OrderByDescending(orderSelector)
-            : query.OrderBy(orderSelector);
+        return sortOrder?.ToUpperInvariant() switch
+        {
+            FilterConstants.Descendant => query.OrderByDescending(orderSelector),
+            FilterConstants.Acscendant => query.OrderBy(orderSelector),
+            _ => query.OrderBy(orderSelector)
+        };
     }
 }
