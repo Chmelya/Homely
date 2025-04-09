@@ -16,7 +16,7 @@ public class AuthenticationController(
     [HttpPost("signin", Name = "Sign in")]
     public async Task<IActionResult> SignIn(SignInRequest request)
     {
-        var user = await userRepository.GetAsync(u => u.Email == request.Email);
+        var user = await userRepository.GetWithRole(u => u.Email == request.Email);
 
         if (user?.Password != request.Password)
         {

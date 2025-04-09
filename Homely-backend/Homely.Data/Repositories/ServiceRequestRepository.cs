@@ -1,6 +1,6 @@
 ﻿using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Repositories;
-using Homely.Application.ServiceRequests.Response;
+using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;

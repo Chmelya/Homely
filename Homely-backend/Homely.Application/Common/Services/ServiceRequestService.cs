@@ -1,9 +1,11 @@
 ﻿using ErrorOr;
 using Homely.Application.Common.Filters;
+using Homely.Application.Common.HelperModels;
 using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
-using Homely.Application.ServiceRequests.Requests;
-using Homely.Application.ServiceRequests.Response;
+using Homely.Application.Extensions;
+using Homely.Application.Models.ServiceRequests.Requests;
+using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Homely.Domain.Enums;
 using X.PagedList;
@@ -114,6 +116,39 @@ namespace Homely.Application.Common.Services
             catch (Exception)
             {
                 return Error.Failure(description: "Error during update service request");
+            }
+        }
+
+        public ErrorOr<ServiceRequestOptionsResponse> GetOptions()
+        {
+            try
+            {
+                //TODO: Refactor
+                var categoreis = Enum.GetValues(typeof(Category))
+                    .Cast<Category>()
+                    .Select(category => new DropdownValue { Key = (int)category, Value = category.GetDescription() })
+                    .ToList();
+
+                var urgencies = Enum.GetValues(typeof(Urgency))
+                   .Cast<Urgency>()
+                   .Select(urgency => new DropdownValue { Key = (int)urgency, Value = urgency.GetDescription() })
+                   .ToList();
+
+                var statues = Enum.GetValues(typeof(RequestStatus))
+                   .Cast<RequestStatus>()
+                   .Select(urgency => new DropdownValue { Key = (int)urgency, Value = urgency.GetDescription() })
+                   .ToList();
+
+                return new ServiceRequestOptionsResponse
+                {
+                    Categories = categoreis,
+                    Urgencies = urgencies,
+                    Statuses = statues
+                };
+            }
+            catch (Exception)
+            {
+                return Error.Failure(description: "Error during getting service request options");
             }
         }
     }

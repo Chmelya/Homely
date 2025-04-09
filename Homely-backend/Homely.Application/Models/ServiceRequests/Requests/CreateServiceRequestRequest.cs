@@ -1,4 +1,4 @@
-﻿namespace Homely.Application.ServiceRequests.Requests
+﻿namespace Homely.Application.Models.ServiceRequests.Requests
 {
     public sealed class CreateServiceRequestRequest : BaseServiceRequestRequest;
 }
