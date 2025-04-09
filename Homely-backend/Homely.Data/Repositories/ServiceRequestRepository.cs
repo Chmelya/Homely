@@ -51,6 +51,12 @@ public class ServiceRequestRepository(ApplicationDbContext context)
 
     private static IQueryable<ServiceRequest> ApplyFilters(IQueryable<ServiceRequest> query, ServiceRequestFilter filter)
     {
+        if (filter.SortColumn is null
+           && filter.SortOrder is null)
+        {
+            return query.OrderByDescending(sr => sr.CreatedAt);
+        }
+
         var orderSelector = GetOrderSelector(filter.SortColumn);
 
         query = ApplySort(query, filter.SortOrder, orderSelector);

@@ -71,6 +71,7 @@ const RequestFormWrapped = ({ request }: { request: ServiceRequest }) => {
 			cancelHandler={cancelHandler}
 			submitHandler={submitHandler}
 			isButtonsInactive={isPendingUpdate}
+			isEditMode
 		/>
 	);
 };
