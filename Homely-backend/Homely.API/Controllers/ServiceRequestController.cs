@@ -1,5 +1,6 @@
-﻿using Homely.Application.Common.Interfaces.Services;
-using Homely.Application.ServiceRequests;
+﻿using Homely.Application.Common.Filters;
+using Homely.Application.Common.Interfaces.Services;
+using Homely.Application.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,20 +14,59 @@ namespace Homely.API.Controllers
         public async Task<IActionResult> CreateRequest(
             [FromBody] CreateServiceRequestRequest request)
         {
-            await requestService.CreateServiceRequestAsync(request);
+            var result = await requestService.CreateServiceRequestAsync(request);
 
-            return Ok();
+            return result.Match(_ => Ok(), Problem);
         }
 
         [HttpPatch("{requestId:int}", Name = "Edit single service request")]
         [Authorization(Permissions.RequestEdit)]
         public async Task<IActionResult> EditRequest(
-            [FromQuery] int requestId,
+            int requestId,
             [FromBody] UpdateServiceRequestRequest request)
         {
-            await requestService.UpdateServiceRequestAsync(requestId, request);
+            var result = await requestService.UpdateServiceRequestAsync(requestId, request);
 
-            return Ok();
+            return result.Match(_ => Ok(), Problem);
+        }
+
+        [HttpGet("{requestId:int}", Name = "Get single service request")]
+        [Authorization(Permissions.RequestRead)]
+        public async Task<IActionResult> GetRequest(int requestId)
+        {
+            var result = await requestService.GetRequest(requestId);
+
+            return result.Match(Ok, Problem);
+        }
+
+        [HttpGet("sortedList", Name = "Get paged service requests")]
+        [Authorization(Permissions.RequestRead)]
+        public async Task<IActionResult> GetRequest(
+            //TODO: ErrorOr resolve
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortColumn = null,
+            [FromQuery] string? sortOrder = null)
+        {
+            var filter = new ServiceRequestFilter
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                SortColumn = sortColumn,
+                SortOrder = sortOrder
+            };
+
+            var result = await requestService.GetRequests(filter);
+
+            var resultWithCount = new
+            {
+                result.PageCount,
+                result.PageNumber,
+                TotalCount = result.TotalItemCount,
+                Items = result,
+            };
+
+            return Ok(resultWithCount);
         }
     }
 }

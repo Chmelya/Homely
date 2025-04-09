@@ -20,36 +20,40 @@ public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IB
         return dbSet;
     }
 
-    protected IQueryable<TEntity> GetAll(bool isAsNoTracking = false)
+    protected IQueryable<TEntity> GetAsSplitable(bool isAsNoTracking = false)
     {
         return Get(isAsNoTracking).AsSplitQuery();
     }
 
-    public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async Task AddAsync(TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         await context.Set<TEntity>().AddAsync(entity, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task AddManyAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public async Task AddManyAsync(IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default)
     {
         await context.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         context.Set<TEntity>().Update(entity);
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateManyAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public async Task UpdateManyAsync(IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default)
     {
         context.Set<TEntity>().UpdateRange(entities);
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<TEntity?> FindAsync(
+    public async Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default)
@@ -63,15 +67,16 @@ public abstract class BaseRepository<TEntity>(ApplicationDbContext context) : IB
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<TEntity> query = GetAll(isAsNoTracking);
+        IQueryable<TEntity> query = GetAsSplitable(isAsNoTracking);
 
         return await query
             .Where(predicate)
             .ToListAsync(cancellationToken);
     }
 
-    public List<TEntity> GetAllAsList(bool isAsNoTracking = false)
+    public async Task<List<TEntity>> GetAllAsList(bool isAsNoTracking = false,
+        CancellationToken cancellationToken = default)
     {
-        return GetAll(isAsNoTracking).ToList();
+        return await GetAsSplitable(isAsNoTracking).ToListAsync(cancellationToken);
     }
 }

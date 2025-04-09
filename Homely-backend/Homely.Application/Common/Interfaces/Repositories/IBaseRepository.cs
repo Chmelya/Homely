@@ -13,7 +13,7 @@ public interface IBaseRepository<TEntity> where TEntity : Entity
 
     Task UpdateManyAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-    Task<TEntity?> FindAsync(
+    Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default);
@@ -23,5 +23,6 @@ public interface IBaseRepository<TEntity> where TEntity : Entity
         bool isAsNoTracking = false,
         CancellationToken cancellationToken = default);
 
-    List<TEntity> GetAllAsList(bool isAsNoTracking = false);
+    Task<List<TEntity>> GetAllAsList(bool isAsNoTracking = false,
+        CancellationToken cancellationToken = default);
 }

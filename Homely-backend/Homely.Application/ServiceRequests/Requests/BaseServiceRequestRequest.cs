@@ -1,10 +1,10 @@
 ﻿using Homely.Domain.Enums;
 
-namespace Homely.Application.ServiceRequests
+namespace Homely.Application.ServiceRequests.Requests
 {
     public abstract class BaseServiceRequestRequest
     {
-        public int UserId { get; set; }
+        public int CreatorId { get; set; }
 
         public string Title { get; set; }
 
