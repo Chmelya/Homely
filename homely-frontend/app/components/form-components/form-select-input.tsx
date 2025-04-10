@@ -16,7 +16,7 @@ const FormSelectInput = (props: FormInputProps) => {
 				fieldState: { error },
 				formState,
 			}) => (
-				<FormControl>
+				<FormControl className={props.className}>
 					<InputLabel id={props.labelId}>{props.label}</InputLabel>
 					<Select {...props} error={!!error} onChange={onChange} value={value}>
 						{props.children}

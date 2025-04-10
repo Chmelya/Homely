@@ -1,4 +1,11 @@
-import { Chip, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
+import {
+	Chip,
+	IconButton,
+	Stack,
+	TableCell,
+	TableRow,
+	Tooltip,
+} from '@mui/material';
 import { useMemo, type ReactElement } from 'react';
 import { Link } from 'react-router';
 import { Urgencies, type Dictionary } from '~/models/pairs';
@@ -11,6 +18,10 @@ import MediumIcon from '@mui/icons-material/Remove';
 import LowIcon from '@mui/icons-material/ExpandMore';
 import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import type { ServiceRequestOptions } from '~/models/serviceRequestOptions';
+import EastIcon from '@mui/icons-material/East';
+import { useRole } from '~/auth/authorized';
+import { Roles } from '~/auth/permissions';
+import { StatusEnum } from '~/models/statuses';
 
 const TableBodyRow = ({
 	request,
@@ -19,6 +30,8 @@ const TableBodyRow = ({
 	request: ServiceRequest;
 	options: ServiceRequestOptions;
 }) => {
+	const { hasAccess: isAdmin } = useRole([Roles.Admin]);
+
 	const UrgencyIcons = useMemo(() => {
 		const urgencyIcons: Dictionary<ReactElement> = {};
 		urgencyIcons['1'] = <CriticalIcon />;
@@ -34,36 +47,40 @@ const TableBodyRow = ({
 		<TableRow key={request.requestId}>
 			<TableCell align='left'>{request.title}</TableCell>
 			<TableCell align='center'>
-				<Chip
-					label={
-						options?.statuses.filter((c) => c.key === request.statusId)[0].value
-					}
-					color='default'
-				/>
+				<Chip label={request.statusName} color='default' />
 			</TableCell>
-			<TableCell align='center'>
-				{
-					options?.categories.filter((c) => c.key === request.categoryId)[0]
-						.value
-				}
-			</TableCell>
+			<TableCell align='center'>{request.categoryName}</TableCell>
 			<TableCell align='center'>
 				{new Date(request.createdDate).toLocaleDateString()}
 			</TableCell>
 			<TableCell align='center'>
-				<Tooltip title={Urgencies[request.urgencyId]} placement='right'>
+				<Tooltip title={request.urgencyName} placement='right'>
 					{UrgencyIcons[request.urgencyId]}
 				</Tooltip>
 			</TableCell>
 			<TableCell align='right'>
-				<Tooltip title='Edit request' placement='left'>
-					<IconButton
-						component={Link}
-						to={ROUTES.editRequest(request.requestId)}
-					>
-						<EditIcon color='info' />
-					</IconButton>
-				</Tooltip>
+				<Stack direction='row' justifyContent='end'>
+					<Tooltip title='Edit request' placement='left'>
+						<IconButton
+							component={Link}
+							to={ROUTES.editRequest(request.requestId)}
+						>
+							<EditIcon color='info' />
+						</IconButton>
+					</Tooltip>
+					{isAdmin &&
+						(request.statusId === StatusEnum.InProgress ||
+							request.statusId === StatusEnum.Created) && (
+							<Tooltip title='Process request' placement='left'>
+								<IconButton
+									component={Link}
+									to={ROUTES.processRequest(request.requestId)}
+								>
+									<EastIcon color='info' />
+								</IconButton>
+							</Tooltip>
+						)}
+				</Stack>
 			</TableCell>
 		</TableRow>
 	);

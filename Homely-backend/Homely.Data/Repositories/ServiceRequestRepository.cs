@@ -1,5 +1,6 @@
 ﻿using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Repositories;
+using Homely.Application.Extensions;
 using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,9 @@ public class ServiceRequestRepository(ApplicationDbContext context)
             StatusId = (int)request.Status,
             UrgencyId = (int)request.Urgency,
             CategoryId = (int)request.Category,
+            StatusName = request.Status.GetDescription(),
+            UrgencyName = request.Urgency.GetDescription(),
+            CategoryName = request.Category.GetDescription(),
             CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
         });
 

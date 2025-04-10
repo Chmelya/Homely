@@ -39,6 +39,9 @@ namespace Homely.Application.Common.Services
                 StatusId = (int)request.Status,
                 UrgencyId = (int)request.Urgency,
                 CategoryId = (int)request.Category,
+                StatusName = request.Status.GetDescription(),
+                UrgencyName = request.Urgency.GetDescription(),
+                CategoryName = request.Category.GetDescription(),
                 Description = request.Details.Description,
                 CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
             };

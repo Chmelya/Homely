@@ -14,7 +14,7 @@ import { useSortedRequests } from './requests-main.hook';
 import TablePaginator from './request-main-table-paginator';
 import TableHeadRow from './request-main-table-head-row';
 import TableBodyRow from './request-main-table-body-row';
-import { useOptionsQuery } from '../requests.hook';
+import { useOptionsQuery } from '../requests.hooks';
 const RequestsMainPage = () => {
 	const navigate = useNavigate();
 

@@ -2,7 +2,7 @@ import { Box, Button, MenuItem, Typography } from '@mui/material';
 import type { UseFormReturn } from 'react-hook-form';
 import FormSelectInput from '~/components/form-components/form-select-input';
 import FormTextInput from '~/components/form-components/form-text-input';
-import type { ServiceRequestValues } from './edit-request/edit-request.model';
+import type { ServiceRequestValues } from './request-form.model';
 import Form from '~/components/form-components/form';
 import CancelRequest from './request-form-cancel';
 import CriticalIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -12,7 +12,10 @@ import LowIcon from '@mui/icons-material/ExpandMore';
 import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { useMemo, type ReactElement } from 'react';
 import type { Dictionary } from '~/models/pairs';
-import { useOptionsQuery } from '../requests.hook';
+import { useOptionsQuery } from '../requests.hooks';
+import { useRole } from '~/auth/authorized';
+import { Roles } from '~/auth/permissions';
+import { useNavigate } from 'react-router';
 
 const RequestForm = ({
 	form,
@@ -27,7 +30,9 @@ const RequestForm = ({
 	isButtonsInactive: boolean;
 	isEditMode?: boolean;
 }) => {
+	const { hasAccess: isAdmin } = useRole([Roles.Admin]);
 	const { data: options } = useOptionsQuery();
+	const navigate = useNavigate();
 
 	const UrgencyIcons = useMemo(() => {
 		const urgencyIcons: Dictionary<ReactElement> = {};
@@ -40,12 +45,19 @@ const RequestForm = ({
 		return urgencyIcons;
 	}, []);
 
+	if (!options) {
+		// TODO: Loader
+		return <div>LOAD</div>;
+	}
+
 	return (
 		<>
 			<Typography variant='h4' className='flex justify-center-safe'>
 				{isEditMode ? 'Request edit' : 'Create Request'}
 			</Typography>
-
+			<Box>
+				<Button onClick={() => navigate(-1)}>{'<'} Back</Button>
+			</Box>
 			<Form form={form} submitHandler={submitHandler}>
 				<Box className='grid grid-cols-4 gap-4 mt-10'>
 					<FormTextInput
@@ -56,11 +68,26 @@ const RequestForm = ({
 					/>
 
 					<FormSelectInput
+						labelId='status-category-id'
+						className='col-span-2'
+						name='status'
+						label='Status'
+						disabled={!isAdmin}
+					>
+						{options.statuses.map((s) => (
+							<MenuItem key={s.key} value={s.key}>
+								{s.value}
+							</MenuItem>
+						))}
+					</FormSelectInput>
+
+					<FormSelectInput
 						labelId='label-urgency-id'
+						className='col-span-2'
 						name='urgency'
 						label='Urgency'
 					>
-						{options?.urgencies.map((u) => (
+						{options.urgencies.map((u) => (
 							<MenuItem key={u.key} value={u.key}>
 								{u.value}
 								{UrgencyIcons[u.key]}
@@ -70,10 +97,11 @@ const RequestForm = ({
 
 					<FormSelectInput
 						labelId='label-category-id'
+						className='col-span-2'
 						name='category'
 						label='Category'
 					>
-						{options?.categories.map((c) => (
+						{options.categories.map((c) => (
 							<MenuItem key={c.key} value={c.key}>
 								{c.value}
 							</MenuItem>
@@ -90,7 +118,6 @@ const RequestForm = ({
 					/>
 
 					{/* TODO: file upload */}
-
 					<Box className='col-span-4 flex justify-end gap-2 mt-20'>
 						<CancelRequest
 							isButtonsInactive={isButtonsInactive}

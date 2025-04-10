@@ -9,6 +9,7 @@ export const serviceRequestValidationSchema = z.object({
 		.nullable(),
 	urgency: z.number(),
 	category: z.number(),
+	status: z.number(),
 });
 
 export type ServiceRequestValues = z.infer<

@@ -1,8 +1,4 @@
 import { useForm } from 'react-hook-form';
-import {
-	serviceRequestValidationSchema,
-	type ServiceRequestValues,
-} from './create-request.model';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsServices';
 import type { ServiceRequest } from '~/models/service-request';
@@ -13,6 +9,10 @@ import { useNavigate } from 'react-router';
 import { ROUTES } from '~/routes/paths';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import RequestForm from '../request-form';
+import {
+	serviceRequestValidationSchema,
+	type ServiceRequestValues,
+} from '../request-form.model';
 
 const CreateRequestPage = () => {
 	const userId = useAppSelector(authSlice.selectors.user)!.id;
@@ -39,7 +39,7 @@ const CreateRequestPage = () => {
 	});
 
 	const submitHandler = (formData: ServiceRequestValues) => {
-		const values = formData as ServiceRequest;
+		const values = formData as unknown as ServiceRequest;
 		values.creatorId = userId;
 
 		mutate(values);

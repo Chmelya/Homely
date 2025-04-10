@@ -43,4 +43,12 @@ export class RequestsService {
 		);
 		return res.data;
 	};
+
+	static editRequestOwner = async (serviceRequest: ServiceRequest) => {
+		var res = await apiClient.patch(
+			`/ServiceRequest/${serviceRequest.requestId}/owner`,
+			serviceRequest
+		);
+		return res.data;
+	};
 }

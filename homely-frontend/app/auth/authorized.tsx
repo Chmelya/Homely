@@ -51,10 +51,10 @@ export const AuthorizedRole = ({
 	return children;
 };
 
-export const useRole = (roles: string) => {
+export const useRole = (roles: string[]) => {
 	const userRole = useAppSelector(authSlice.selectors.role);
 
 	const hasAccess = userRole && roles?.includes(userRole);
 
-	return hasAccess;
+	return { hasAccess };
 };

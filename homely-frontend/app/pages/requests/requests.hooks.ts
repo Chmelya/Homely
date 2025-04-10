@@ -3,6 +3,12 @@ import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsS
 
 export const useOptionsQuery = () =>
 	useQuery({
-		queryKey: ['request', 'options'],
+		queryKey: ['options', 'request'],
 		queryFn: () => RequestsService.getOptions(),
+	});
+
+export const useRequestQuery = (requestId: number | string) =>
+	useQuery({
+		queryKey: ['requests', Number(requestId)],
+		queryFn: () => RequestsService.getRequest(Number(requestId)),
 	});
