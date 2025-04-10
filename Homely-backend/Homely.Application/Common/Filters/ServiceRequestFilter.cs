@@ -1,4 +1,6 @@
-﻿namespace Homely.Application.Common.Filters
+﻿using Homely.Domain.Enums;
+
+namespace Homely.Application.Common.Filters
 {
     public sealed class ServiceRequestFilter
     {
@@ -9,5 +11,11 @@
         public string? SortColumn { get; set; }
 
         public string? SortOrder { get; set; }
+
+        public List<RequestStatus> Statuses { get; set; }
+
+        public List<Category> Categories { get; set; }
+
+        public List<Urgency> Urgencies { get; set; }
     }
 }

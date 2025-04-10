@@ -5,6 +5,7 @@ using Homely.Domain.Constants.Rbac;
 using Homely.Infrastructure.Identification.Authorization;
 using Homely.Infrastructure.Identification.Common;
 using Microsoft.AspNetCore.Mvc;
+using Homely.Domain.Enums;
 
 namespace Homely.API.Controllers
 {
@@ -60,14 +61,20 @@ namespace Homely.API.Controllers
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortColumn = null,
-            [FromQuery] string? sortOrder = null)
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] List<RequestStatus>? statuses = null,
+            [FromQuery] List<Category>? categories = null,
+            [FromQuery] List<Urgency>? urgencies = null)
         {
             var filter = new ServiceRequestFilter
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 SortColumn = sortColumn,
-                SortOrder = sortOrder
+                SortOrder = sortOrder,
+                Statuses = statuses,
+                Categories = categories,
+                Urgencies = urgencies
             };
 
             var result = await requestService.GetRequests(filter);
