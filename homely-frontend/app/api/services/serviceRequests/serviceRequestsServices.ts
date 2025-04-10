@@ -4,6 +4,7 @@ import type {
 	PaginatedRequestParams,
 	PaginatedResponse,
 } from '~/models/requestsList';
+import type { ServiceRequestOptions } from '~/models/serviceRequestOptions';
 
 export class RequestsService {
 	static createRequest = async (serviceRequest: ServiceRequest) => {
@@ -14,6 +15,13 @@ export class RequestsService {
 	static getRequest = async (requestId: number) => {
 		var res = await apiClient.get<ServiceRequest>(
 			`/serviceRequest/${requestId}`
+		);
+		return res.data;
+	};
+
+	static getOptions = async () => {
+		var res = await apiClient.get<ServiceRequestOptions>(
+			`/serviceRequest/options`
 		);
 		return res.data;
 	};
@@ -31,6 +39,14 @@ export class RequestsService {
 	static editRequest = async (serviceRequest: ServiceRequest) => {
 		var res = await apiClient.patch(
 			`/ServiceRequest/${serviceRequest.requestId}`,
+			serviceRequest
+		);
+		return res.data;
+	};
+
+	static editRequestOwner = async (serviceRequest: ServiceRequest) => {
+		var res = await apiClient.patch(
+			`/ServiceRequest/${serviceRequest.requestId}/owner`,
 			serviceRequest
 		);
 		return res.data;

@@ -2,21 +2,23 @@ import { useForm } from 'react-hook-form';
 import {
 	serviceRequestValidationSchema,
 	type ServiceRequestValues,
-} from './edit-request.model';
+} from '../request-form.model';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsServices';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import RequestForm from '../request-form';
 import type { ServiceRequest } from '~/models/service-request';
+import { useRequestQuery } from '../../requests.hooks';
+import { useRole } from '~/auth/authorized';
+import { Roles } from '~/auth/permissions';
+import { useAppSelector } from '~/store/hooks/store-hooks';
+import { authSlice } from '~/store/auth/auth-slice';
+import { ROUTES } from '~/routes/paths';
 
 const EditRequestPage = () => {
 	const { requestId } = useParams<{ requestId: string }>();
-
-	const { data: request, isLoading } = useQuery({
-		queryKey: ['request', Number(requestId)],
-		queryFn: () => RequestsService.getRequest(Number(requestId)),
-	});
+	const { data: request, isLoading } = useRequestQuery(requestId!);
 
 	if (isLoading) {
 		//TODO: Skeleton
@@ -29,10 +31,18 @@ const EditRequestPage = () => {
 const RequestFormWrapped = ({ request }: { request: ServiceRequest }) => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+	const { hasAccess: isAdmin } = useRole([Roles.Admin]);
+	const user = useAppSelector(authSlice.selectors.user);
+
+	if (!isAdmin && request.creatorId !== user?.id) {
+		return <Navigate to={ROUTES.forbidden} replace />;
+	}
 
 	const { isPending: isPendingUpdate, mutate } = useMutation({
 		mutationKey: ['requests', 'edit'],
-		mutationFn: RequestsService.editRequest,
+		mutationFn: isAdmin
+			? RequestsService.editRequest
+			: RequestsService.editRequestOwner,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['requests'],
@@ -42,12 +52,15 @@ const RequestFormWrapped = ({ request }: { request: ServiceRequest }) => {
 	});
 
 	const submitHandler = (formData: ServiceRequestValues) => {
-		request.title = formData.title;
-		request.description = formData.description;
-		request.category = formData.category;
-		request.urgency = formData.urgency;
+		const newRequest = request;
 
-		mutate(request);
+		newRequest.title = formData.title;
+		newRequest.description = formData.description;
+		newRequest.categoryId = formData.category;
+		newRequest.urgencyId = formData.urgency;
+		newRequest.statusId = formData.status;
+
+		mutate(newRequest);
 	};
 
 	const cancelHandler = () => {
@@ -58,8 +71,9 @@ const RequestFormWrapped = ({ request }: { request: ServiceRequest }) => {
 		defaultValues: {
 			title: request.title,
 			description: request.description,
-			category: request.category,
-			urgency: request.urgency,
+			category: request.categoryId,
+			urgency: request.urgencyId,
+			status: request.statusId,
 		},
 		resolver: zodResolver(serviceRequestValidationSchema),
 		mode: 'onTouched',

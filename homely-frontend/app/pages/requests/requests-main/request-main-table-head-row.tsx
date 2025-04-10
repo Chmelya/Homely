@@ -26,33 +26,40 @@ const TableHeadRow = ({
 			label: 'Title',
 			id: 'title',
 			align: 'left',
-			width: 120,
+			width: 25,
 		},
 		{
 			label: 'Status',
 			id: 'status',
 			align: 'center',
-			width: 90,
+			width: 15,
 		},
 		{
 			label: 'Category',
 			id: 'category',
 			align: 'center',
-			width: 100,
+			width: 15,
+		},
+		{
+			label: 'Date',
+			id: 'date',
+			align: 'center',
+			width: 20,
 		},
 		{
 			label: 'Urgency',
 			id: 'urgency',
 			align: 'center',
-			width: 90,
+			width: 10,
 		},
 	];
 
-	const onCellClick = (id: string) => {
-		searchParams.set('pageNumber', (1).toString());
+	const onCellClick = (orderByNew: string) => {
+		const sortOrderNew =
+			orderBy === orderByNew && sortOrder === 'asc' ? 'desc' : 'asc';
 
-		const sortOrderNew = sortOrder === 'asc' ? 'desc' : 'asc';
-		searchParams.set('orderBy', id);
+		searchParams.set('pageNumber', (1).toString());
+		searchParams.set('orderBy', orderByNew);
 		searchParams.set('sortOrder', sortOrderNew);
 
 		navigate(ROUTES.requestsMain(searchParams.toString()));
@@ -64,7 +71,7 @@ const TableHeadRow = ({
 				<TableCell
 					key={headCell.id}
 					align={headCell.align}
-					width={headCell?.width}
+					width={headCell?.width + '%'}
 					sortDirection={orderBy === headCell.id ? sortOrder : false}
 				>
 					<TableSortLabel
@@ -76,7 +83,7 @@ const TableHeadRow = ({
 					</TableSortLabel>
 				</TableCell>
 			))}
-			<TableCell align='right' width={36}></TableCell>
+			<TableCell align='right' width={'5%'}></TableCell>
 		</TableRow>
 	);
 };

@@ -10,21 +10,17 @@ export interface FormProps<T extends FieldValues> {
 	form: UseFormReturn<T>;
 	submitHandler: SubmitHandler<T>;
 	children: React.JSX.Element;
-	className?: string;
 }
 
 const Form = <T extends FieldValues>({
 	form,
 	children,
 	submitHandler,
-	className,
 }: FormProps<T>) => {
 	return (
-		<Box className={className}>
-			<FormProvider {...form}>
-				<form onSubmit={form.handleSubmit(submitHandler)}>{children}</form>
-			</FormProvider>
-		</Box>
+		<FormProvider {...form}>
+			<form onSubmit={form.handleSubmit(submitHandler)}>{children}</form>
+		</FormProvider>
 	);
 };
 

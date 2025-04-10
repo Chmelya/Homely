@@ -11,6 +11,7 @@ export interface AuthSliceState {
 	authToken?: AuthToken;
 	user?: User;
 	permissions?: string[];
+	role?: string;
 }
 
 const initialState: AuthSliceState = {};
@@ -23,6 +24,7 @@ export const authSlice = createSlice({
 		isAuthenticated: (state) => isAuthTokenValid(state.authToken),
 		user: (state) => state.user,
 		permissions: (state) => state.permissions,
+		role: (state) => state.role,
 	},
 	reducers: {
 		signIn: (
@@ -45,10 +47,10 @@ export const authSlice = createSlice({
 			state.user = {
 				id: accessTokenDecoded.homely_user_id,
 				email: accessTokenDecoded.homely_email,
-				role: accessTokenDecoded.homely_role,
 			};
 
 			state.permissions = accessTokenDecoded.homely_permissions;
+			state.role = accessTokenDecoded.homely_role;
 
 			localStorage.setItem(STORAGE_AUTH_KEY, JSON.stringify(state));
 		},

@@ -1,5 +1,6 @@
 ﻿using Homely.Application.Common.Filters;
 using Homely.Application.Common.Interfaces.Repositories;
+using Homely.Application.Extensions;
 using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
 using Microsoft.EntityFrameworkCore;
@@ -39,9 +40,13 @@ public class ServiceRequestRepository(ApplicationDbContext context)
             Title = request.Title,
             CreatorId = request.CreatorId,
             AdministratorId = request.AdministratorId,
-            Status = (int)request.Status,
-            Urgency = (int)request.Urgency,
-            Category = (int)request.Category
+            StatusId = (int)request.Status,
+            UrgencyId = (int)request.Urgency,
+            CategoryId = (int)request.Category,
+            StatusName = request.Status.GetDescription(),
+            UrgencyName = request.Urgency.GetDescription(),
+            CategoryName = request.Category.GetDescription(),
+            CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
         });
 
         var pagedList = await responseQuery.ToPagedListAsync(filter.PageNumber, filter.PageSize);

@@ -14,3 +14,47 @@ export const Authorized = ({ children }: PropsWithChildren) => {
 
 	return children;
 };
+
+export const AuthorizedPermissions = ({
+	permissions,
+	children,
+}: PropsWithChildren<{
+	permissions: string[];
+}>) => {
+	const userPermissions = useAppSelector(authSlice.selectors.permissions);
+
+	const hasAccess = userPermissions?.filter((value) =>
+		permissions.includes(value)
+	);
+
+	if (!hasAccess) {
+		return <Navigate to={ROUTES.forbidden} replace />;
+	}
+
+	return children;
+};
+
+export const AuthorizedRole = ({
+	roles,
+	children,
+}: PropsWithChildren<{
+	roles: string[];
+}>) => {
+	const userRole = useAppSelector(authSlice.selectors.role);
+
+	const hasAccess = userRole && roles?.includes(userRole);
+
+	if (!hasAccess) {
+		return <Navigate to={ROUTES.forbidden} replace />;
+	}
+
+	return children;
+};
+
+export const useRole = (roles: string[]) => {
+	const userRole = useAppSelector(authSlice.selectors.role);
+
+	const hasAccess = userRole && roles?.includes(userRole);
+
+	return { hasAccess };
+};

@@ -21,6 +21,10 @@ export default [
 				`${ROUTES.editRequestPath}/:requestId`,
 				'./pages/requests/requests-form/edit-request/edit-request.tsx'
 			),
+			route(
+				`${ROUTES.processRequestPath}/:requestId`,
+				'./pages/requests/request-process/request-process.tsx'
+			),
 		]),
 	]),
 

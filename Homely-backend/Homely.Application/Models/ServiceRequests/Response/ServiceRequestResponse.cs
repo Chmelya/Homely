@@ -10,11 +10,19 @@
 
         public int? AdministratorId { get; set; }
 
-        public int Status { get; set; }
+        public int StatusId { get; set; }
 
-        public int Urgency { get; set; }
+        public string StatusName { get; set; }
 
-        public int Category { get; set; }
+        public int UrgencyId { get; set; }
+
+        public string UrgencyName { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public long CreatedDate { get; set; }
 
         public string? Description { get; set; }
     }
