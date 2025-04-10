@@ -15,25 +15,25 @@ import TablePaginator from './request-main-table-paginator';
 import TableHeadRow from './request-main-table-head-row';
 import TableBodyRow from './request-main-table-body-row';
 import { useOptionsQuery } from '../requests.hooks';
+import TableToolbar from './request-main-table-toolbar';
 const RequestsMainPage = () => {
 	const navigate = useNavigate();
 
-	const { data, isPending, searchParams, orderBy, sortOrder } =
-		useSortedRequests();
+	const { data, searchParams, orderBy, sortOrder } = useSortedRequests();
 	const { data: options } = useOptionsQuery();
+
+	if (!options) {
+		// TODO: LOADER
+		return <div>LOAD</div>;
+	}
 
 	return (
 		<Box>
-			<Container className='flex justify-center mt-6'>
-				<Typography className='' variant='h4'>
-					My Requests
-				</Typography>
-			</Container>
-
 			{/* TODO: Skeleton on load */}
 			<TableContainer component={Paper} elevation={3} className=' mt-6'>
+				<TableToolbar options={options}></TableToolbar>
 				<Table size='small'>
-					<TableHead className='bg-pink-400 '>
+					<TableHead className='bg-pink-400'>
 						<TableHeadRow
 							sortOrder={sortOrder}
 							orderBy={orderBy}
