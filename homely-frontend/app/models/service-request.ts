@@ -4,8 +4,8 @@ export interface ServiceRequest {
 	administratorId: number;
 	title: string;
 	description?: string | null;
-	//TODO: To enum
-	urgency: number;
-	category: number;
-	status: number;
+	urgencyId: number;
+	categoryId: number;
+	statusId: number;
+	createdDate: Date;
 }

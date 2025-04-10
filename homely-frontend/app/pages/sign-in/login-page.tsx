@@ -49,15 +49,17 @@ const LoginPage = () => {
 	};
 
 	return (
-		<Box className=' h-screen flex items-center justify-center '>
+		<Box className='h-screen flex items-center justify-center transition-all'>
 			<Paper elevation={10} className='p-10 min-w-120'>
 				<Form form={form} submitHandler={submitHandler}>
 					<Stack direction='column' gap={2}>
 						<FormTextInput name='email' label='Login' />
 						<FormTextInput name='password' label='Password' type='password' />
+
 						{error && (
-							<Alert severity='error'>{getApiErrorMessage(error)}</Alert>
+							<Alert severity='error'>{getApiErrorMessage(error!)}</Alert>
 						)}
+
 						<Button
 							disabled={isPending}
 							loading={isPending}

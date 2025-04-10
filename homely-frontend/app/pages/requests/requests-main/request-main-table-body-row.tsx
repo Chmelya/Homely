@@ -1,18 +1,24 @@
 import { Chip, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
 import { useMemo, type ReactElement } from 'react';
 import { Link } from 'react-router';
-import { RequestStatuses, Urgencies, type Dictionary } from '~/models/pairs';
+import { Urgencies, type Dictionary } from '~/models/pairs';
 import { ROUTES } from '~/routes/paths';
 import EditIcon from '@mui/icons-material/Edit';
 import type { ServiceRequest } from '~/models/service-request';
-import { CategoryEnum } from '~/models/categories';
 import CriticalIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import HighIcon from '@mui/icons-material/ExpandLess';
 import MediumIcon from '@mui/icons-material/Remove';
 import LowIcon from '@mui/icons-material/ExpandMore';
 import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import type { ServiceRequestOptions } from '~/models/serviceRequestOptions';
 
-const TableBodyRow = ({ request }: { request: ServiceRequest }) => {
+const TableBodyRow = ({
+	request,
+	options,
+}: {
+	request: ServiceRequest;
+	options: ServiceRequestOptions;
+}) => {
 	const UrgencyIcons = useMemo(() => {
 		const urgencyIcons: Dictionary<ReactElement> = {};
 		urgencyIcons['1'] = <CriticalIcon />;
@@ -28,12 +34,25 @@ const TableBodyRow = ({ request }: { request: ServiceRequest }) => {
 		<TableRow key={request.requestId}>
 			<TableCell align='left'>{request.title}</TableCell>
 			<TableCell align='center'>
-				<Chip label={RequestStatuses[request.status]} color='default' />
+				<Chip
+					label={
+						options?.statuses.filter((c) => c.key === request.statusId)[0].value
+					}
+					color='default'
+				/>
 			</TableCell>
-			<TableCell align='center'>{CategoryEnum[request.category]}</TableCell>
 			<TableCell align='center'>
-				<Tooltip title={Urgencies[request.urgency]} placement='right'>
-					{UrgencyIcons[request.urgency]}
+				{
+					options?.categories.filter((c) => c.key === request.categoryId)[0]
+						.value
+				}
+			</TableCell>
+			<TableCell align='center'>
+				{new Date(request.createdDate).toLocaleDateString()}
+			</TableCell>
+			<TableCell align='center'>
+				<Tooltip title={Urgencies[request.urgencyId]} placement='right'>
+					{UrgencyIcons[request.urgencyId]}
 				</Tooltip>
 			</TableCell>
 			<TableCell align='right'>

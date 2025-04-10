@@ -39,9 +39,10 @@ public class ServiceRequestRepository(ApplicationDbContext context)
             Title = request.Title,
             CreatorId = request.CreatorId,
             AdministratorId = request.AdministratorId,
-            Status = (int)request.Status,
-            Urgency = (int)request.Urgency,
-            Category = (int)request.Category
+            StatusId = (int)request.Status,
+            UrgencyId = (int)request.Urgency,
+            CategoryId = (int)request.Category,
+            CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
         });
 
         var pagedList = await responseQuery.ToPagedListAsync(filter.PageNumber, filter.PageSize);

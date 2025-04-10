@@ -2,8 +2,6 @@ import { Box, Button, MenuItem, Typography } from '@mui/material';
 import type { UseFormReturn } from 'react-hook-form';
 import FormSelectInput from '~/components/form-components/form-select-input';
 import FormTextInput from '~/components/form-components/form-text-input';
-import { Categories } from '~/models/categories';
-import { Urgencies } from '~/models/urgency';
 import type { ServiceRequestValues } from './edit-request/edit-request.model';
 import Form from '~/components/form-components/form';
 import CancelRequest from './request-form-cancel';
@@ -14,6 +12,7 @@ import LowIcon from '@mui/icons-material/ExpandMore';
 import LowestIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import { useMemo, type ReactElement } from 'react';
 import type { Dictionary } from '~/models/pairs';
+import { useOptionsQuery } from '../requests.hook';
 
 const RequestForm = ({
 	form,
@@ -28,6 +27,8 @@ const RequestForm = ({
 	isButtonsInactive: boolean;
 	isEditMode?: boolean;
 }) => {
+	const { data: options } = useOptionsQuery();
+
 	const UrgencyIcons = useMemo(() => {
 		const urgencyIcons: Dictionary<ReactElement> = {};
 		urgencyIcons['1'] = <CriticalIcon />;
@@ -41,7 +42,7 @@ const RequestForm = ({
 
 	return (
 		<>
-			<Typography variant='h6' className='flex justify-center-safe'>
+			<Typography variant='h4' className='flex justify-center-safe'>
 				{isEditMode ? 'Request edit' : 'Create Request'}
 			</Typography>
 
@@ -59,7 +60,7 @@ const RequestForm = ({
 						name='urgency'
 						label='Urgency'
 					>
-						{Urgencies.map((u) => (
+						{options?.urgencies.map((u) => (
 							<MenuItem key={u.key} value={u.key}>
 								{u.value}
 								{UrgencyIcons[u.key]}
@@ -72,7 +73,7 @@ const RequestForm = ({
 						name='category'
 						label='Category'
 					>
-						{Categories.map((c) => (
+						{options?.categories.map((c) => (
 							<MenuItem key={c.key} value={c.key}>
 								{c.value}
 							</MenuItem>

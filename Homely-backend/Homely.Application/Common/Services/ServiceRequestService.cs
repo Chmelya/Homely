@@ -36,10 +36,11 @@ namespace Homely.Application.Common.Services
                 Title = request.Title,
                 CreatorId = request.CreatorId,
                 AdministratorId = request.AdministratorId,
-                Status = (int)request.Status,
-                Urgency = (int)request.Urgency,
-                Category = (int)request.Category,
+                StatusId = (int)request.Status,
+                UrgencyId = (int)request.Urgency,
+                CategoryId = (int)request.Category,
                 Description = request.Details.Description,
+                CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
             };
 
             return response;
@@ -71,8 +72,8 @@ namespace Homely.Application.Common.Services
                 {
                     CreatorId = request.CreatorId,
                     Title = request.Title,
-                    Urgency = request.Urgency,
-                    Category = request.Category,
+                    Urgency = request.UrgencyId,
+                    Category = request.CategoryId,
                     Status = RequestStatus.Created,
                     CreatedAt = DateTime.Now,
                     Details = new ServiceRequestDetails
@@ -108,9 +109,9 @@ namespace Homely.Application.Common.Services
                 }
 
                 updatedRequest.Title = request.Title;
-                updatedRequest.Urgency = request.Urgency;
-                updatedRequest.Category = request.Category;
-                updatedRequest.Status = request.Status;
+                updatedRequest.Urgency = request.UrgencyId;
+                updatedRequest.Category = request.CategoryId;
+                updatedRequest.Status = request.StatusId;
 
                 updatedRequest.Details.Description = request.Description;
 

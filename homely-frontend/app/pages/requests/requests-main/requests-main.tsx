@@ -14,12 +14,13 @@ import { useSortedRequests } from './requests-main.hook';
 import TablePaginator from './request-main-table-paginator';
 import TableHeadRow from './request-main-table-head-row';
 import TableBodyRow from './request-main-table-body-row';
-
+import { useOptionsQuery } from '../requests.hook';
 const RequestsMainPage = () => {
 	const navigate = useNavigate();
 
 	const { data, isPending, searchParams, orderBy, sortOrder } =
 		useSortedRequests();
+	const { data: options } = useOptionsQuery();
 
 	return (
 		<Box>
@@ -40,15 +41,21 @@ const RequestsMainPage = () => {
 							navigate={navigate}
 						/>
 					</TableHead>
-					{!isPending && data && (
+					{data && options && (
 						<TableBody>
 							{data.items.map((request) => {
-								return <TableBodyRow request={request} />;
+								return (
+									<TableBodyRow
+										key={request.requestId}
+										request={request}
+										options={options}
+									/>
+								);
 							})}
 						</TableBody>
 					)}
 				</Table>
-				{!isPending && data && (
+				{data && (
 					<TablePaginator
 						searchParams={searchParams}
 						totalCount={data.totalCount}

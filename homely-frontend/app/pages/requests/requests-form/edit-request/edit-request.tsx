@@ -44,8 +44,8 @@ const RequestFormWrapped = ({ request }: { request: ServiceRequest }) => {
 	const submitHandler = (formData: ServiceRequestValues) => {
 		request.title = formData.title;
 		request.description = formData.description;
-		request.category = formData.category;
-		request.urgency = formData.urgency;
+		request.categoryId = formData.category;
+		request.urgencyId = formData.urgency;
 
 		mutate(request);
 	};
@@ -58,8 +58,8 @@ const RequestFormWrapped = ({ request }: { request: ServiceRequest }) => {
 		defaultValues: {
 			title: request.title,
 			description: request.description,
-			category: request.category,
-			urgency: request.urgency,
+			category: request.categoryId,
+			urgency: request.urgencyId,
 		},
 		resolver: zodResolver(serviceRequestValidationSchema),
 		mode: 'onTouched',
