@@ -80,7 +80,7 @@ const LoginPage = () => {
 				</Form>
 				<Box className='mt-4'>
 					<Typography className='flex justify-center text-sm'>
-						Don't have a account?&nbsp;
+						Don't have an account?&nbsp;
 						<Link className='underline text-pink-500' to={ROUTES.signUp}>
 							Become a resident!
 						</Link>

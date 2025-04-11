@@ -22,7 +22,7 @@ export class AuthService {
 		email: string;
 		password: string;
 		firstName: string;
-		middleName?: string;
+		middleName?: string | null;
 		lastName: string;
 	}) => {
 		const res = await api.post('/auth/signUp', {
