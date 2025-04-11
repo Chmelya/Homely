@@ -71,7 +71,7 @@ const LoginPage = () => {
 					</Stack>
 				</Form>
 				<Box className='mt-4'>
-					<Typography className='flex justify-center text-sm'>
+					<Typography className='flex justify-center' variant='overline'>
 						Already a resident?&nbsp;
 						<Link className='underline text-pink-500' to={ROUTES.signIn}>
 							Sign In!
