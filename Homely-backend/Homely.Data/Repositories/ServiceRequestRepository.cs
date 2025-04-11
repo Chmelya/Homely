@@ -56,6 +56,8 @@ public class ServiceRequestRepository(ApplicationDbContext context)
 
     private static IQueryable<ServiceRequest> ApplyFilters(IQueryable<ServiceRequest> query, ServiceRequestFilter filter)
     {
+        query = FilterQuery(query, filter);
+
         if (filter.SortColumn is null
            && filter.SortOrder is null)
         {
@@ -65,6 +67,26 @@ public class ServiceRequestRepository(ApplicationDbContext context)
         var orderSelector = GetOrderSelector(filter.SortColumn);
 
         query = ApplySort(query, filter.SortOrder, orderSelector);
+
+        return query;
+    }
+
+    private static IQueryable<ServiceRequest> FilterQuery(IQueryable<ServiceRequest> query, ServiceRequestFilter filter)
+    {
+        if (filter.Statuses is not null)
+        {
+            query = query.Where(sr => filter.Statuses.Contains(sr.Status));
+        }
+
+        if (filter.Categories is not null)
+        {
+            query = query.Where(sr => filter.Categories.Contains(sr.Category));
+        }
+
+        if (filter.Urgencies is not null)
+        {
+            query = query.Where(sr => filter.Urgencies.Contains(sr.Urgency));
+        }
 
         return query;
     }

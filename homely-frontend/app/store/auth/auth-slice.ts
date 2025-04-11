@@ -46,6 +46,7 @@ export const authSlice = createSlice({
 
 			state.user = {
 				id: accessTokenDecoded.homely_user_id,
+				name: accessTokenDecoded.homely_full_name,
 				email: accessTokenDecoded.homely_email,
 			};
 
