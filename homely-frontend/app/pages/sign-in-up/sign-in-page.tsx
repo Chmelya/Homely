@@ -1,15 +1,23 @@
-import { Alert, Box, Button, Container, Paper, Stack } from '@mui/material';
+import {
+	Alert,
+	Box,
+	Button,
+	Container,
+	Paper,
+	Stack,
+	Typography,
+} from '@mui/material';
 import { AuthService } from '~/api/services/authService';
 import { useDispatch } from 'react-redux';
 import { authSlice } from '~/store/auth/auth-slice';
 import {
 	loginFormValidationSchema,
 	type LoginFormValues,
-} from './login-page.model';
+} from './sign-in.model';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormTextInput from '~/components/form-components/form-text-input';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { ROUTES } from '~/routes/paths';
 import Form from '~/components/form-components/form';
 import { useMutation } from '@tanstack/react-query';
@@ -50,7 +58,7 @@ const LoginPage = () => {
 
 	return (
 		<Box className='h-screen flex items-center justify-center transition-all'>
-			<Paper elevation={10} className='p-10 min-w-120'>
+			<Paper elevation={10} className='px-10 py-6 min-w-120'>
 				<Form form={form} submitHandler={submitHandler}>
 					<Stack direction='column' gap={2}>
 						<FormTextInput name='email' label='Login' />
@@ -70,6 +78,14 @@ const LoginPage = () => {
 						</Button>
 					</Stack>
 				</Form>
+				<Box className='mt-4'>
+					<Typography className='flex justify-center text-sm'>
+						Don't have a account?&nbsp;
+						<Link className='underline text-pink-500' to={ROUTES.signUp}>
+							Become a resident!
+						</Link>
+					</Typography>
+				</Box>
 			</Paper>
 		</Box>
 	);

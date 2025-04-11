@@ -28,5 +28,6 @@ export default [
 		]),
 	]),
 
-	route(ROUTES.signIn, './pages/sign-in/login-page.tsx'),
+	route(ROUTES.signIn, './pages/sign-in-up/sign-in-page.tsx'),
+	route(ROUTES.signUp, './pages/sign-in-up/sign-up-page.tsx'),
 ] satisfies RouteConfig;

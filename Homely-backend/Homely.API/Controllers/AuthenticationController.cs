@@ -11,11 +11,19 @@ public class AuthenticationController(
     IAuthenticationService authenticationService
     ) : ApiController
 {
-    [HttpPost("signin", Name = "Sign in")]
+    [HttpPost("signIn", Name = "Sign in")]
     public async Task<IActionResult> SignIn(SignInRequest request)
     {
         var result = await authenticationService.SignIn(request.Email, request.Password);
 
         return result.Match(Ok, Problem);
+    }
+
+    [HttpPost("signUp", Name = "Sign up")]
+    public async Task<IActionResult> SignUp(SignUpRequest request)
+    {
+        var result = await authenticationService.SignUp(request);
+
+        return result.Match(_ => Ok(), Problem);
     }
 }

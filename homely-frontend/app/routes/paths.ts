@@ -1,6 +1,7 @@
 export const ROUTES = {
 	main: '/',
-	signIn: '/signin',
+	signIn: '/signIn',
+	signUp: '/signUp',
 
 	requestsPrefix: '/requests',
 	createRequestPath: '/create',
