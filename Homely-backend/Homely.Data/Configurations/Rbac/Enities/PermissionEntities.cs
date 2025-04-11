@@ -23,10 +23,16 @@ internal static class PermissionEntities
         Name = Permissions.RequestEdit,
     };
 
-    public static Permission RequestEditOnlyOwner = new()
+    public static Permission RequestEditSelfOnly = new()
     {
         Id = 4,
-        Name = Permissions.RequestEditOnlyOwner,
+        Name = Permissions.RequestEditSelfOnly,
+    };
+
+    public static Permission RequestReadSelfOnly = new()
+    {
+        Id = 5,
+        Name = Permissions.RequestReadSelfOnly,
     };
 
     public static List<Permission> AdminPermissions = GetAllPermissions();
@@ -35,7 +41,8 @@ internal static class PermissionEntities
     [
         RequestWrite,
         RequestRead,
-        RequestEditOnlyOwner
+        RequestEditSelfOnly,
+        RequestReadSelfOnly
     ];
 
     public static List<Permission> GetAllPermissions()

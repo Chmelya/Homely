@@ -1,6 +1,6 @@
 ﻿using Homely.Application.Common.Interfaces.Repositories;
+using Homely.Application.Common.Interfaces.Services;
 using Homely.Domain.Entities.Common;
-using Homely.Infrastructure.Identification.Authentication.Interfaces;
 using Homely.Infrastructure.Identification.Common;
 using Homely.Infrastructure.Identification.Options;
 using Microsoft.Extensions.Options;
