@@ -12,7 +12,7 @@ const TableHeadRow = ({
 	searchParams: URLSearchParams;
 	sortOrder: SortOrder;
 	navigate: NavigateFunction;
-	orderBy?: string;
+	orderBy: string | null;
 }) => {
 	interface HeadCell {
 		id: string;

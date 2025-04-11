@@ -10,7 +10,10 @@ import {
 } from '@mui/material';
 
 import { useNavigate } from 'react-router';
-import { useSortedRequests } from './requests-main.hook';
+import {
+	useRequestsSearchParams,
+	useSortedRequests,
+} from './requests-main.hook';
 import TablePaginator from './request-main-table-paginator';
 import TableHeadRow from './request-main-table-head-row';
 import TableBodyRow from './request-main-table-body-row';
@@ -19,10 +22,12 @@ import TableToolbar from './request-main-table-toolbar';
 const RequestsMainPage = () => {
 	const navigate = useNavigate();
 
-	const { data, searchParams, orderBy, sortOrder } = useSortedRequests();
+	const { data } = useSortedRequests();
+	const { parameters, searchParams, sortOrder, orderBy } =
+		useRequestsSearchParams();
 	const { data: options } = useOptionsQuery();
 
-	if (!options) {
+	if (!options || !data) {
 		// TODO: LOADER
 		return <div>LOAD</div>;
 	}
@@ -31,7 +36,10 @@ const RequestsMainPage = () => {
 		<Box>
 			{/* TODO: Skeleton on load */}
 			<TableContainer component={Paper} elevation={3} className=' mt-6'>
-				<TableToolbar options={options}></TableToolbar>
+				<TableToolbar
+					options={options}
+					searchParams={searchParams}
+				></TableToolbar>
 				<Table size='small'>
 					<TableHead className='bg-pink-400'>
 						<TableHeadRow
@@ -41,28 +49,26 @@ const RequestsMainPage = () => {
 							navigate={navigate}
 						/>
 					</TableHead>
-					{data && options && (
-						<TableBody>
-							{data.items.map((request) => {
-								return (
-									<TableBodyRow
-										key={request.requestId}
-										request={request}
-										options={options}
-									/>
-								);
-							})}
-						</TableBody>
-					)}
+
+					<TableBody>
+						{data.items.map((request) => {
+							return (
+								<TableBodyRow
+									key={request.requestId}
+									request={request}
+									options={options}
+								/>
+							);
+						})}
+					</TableBody>
 				</Table>
-				{data && (
-					<TablePaginator
-						searchParams={searchParams}
-						totalCount={data.totalCount}
-						pageNumber={data.pageNumber}
-						navigate={navigate}
-					/>
-				)}
+
+				<TablePaginator
+					searchParams={searchParams}
+					totalCount={data.totalCount}
+					pageNumber={data.pageNumber}
+					navigate={navigate}
+				/>
 			</TableContainer>
 		</Box>
 	);

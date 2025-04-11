@@ -16,3 +16,9 @@ export interface PaginatedRequestParams extends SortRequestParams {
 	pageNumber: number;
 	pageSize: number;
 }
+
+export interface RequestFilteredParams extends PaginatedRequestParams {
+	statuses?: string[];
+	categories?: string[];
+	urgencies?: string[];
+}

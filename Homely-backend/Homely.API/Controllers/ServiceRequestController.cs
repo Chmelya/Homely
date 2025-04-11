@@ -62,9 +62,9 @@ namespace Homely.API.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortColumn = null,
             [FromQuery] string? sortOrder = null,
-            [FromQuery] List<RequestStatus>? statuses = null,
-            [FromQuery] List<Category>? categories = null,
-            [FromQuery] List<Urgency>? urgencies = null)
+            [FromQuery(Name = "statuses[]")] List<RequestStatus>? statuses = null,
+            [FromQuery(Name = "categories[]")] List<Category>? categories = null,
+            [FromQuery(Name = "urgencies[]")] List<Urgency>? urgencies = null)
         {
             var filter = new ServiceRequestFilter
             {

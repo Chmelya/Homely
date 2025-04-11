@@ -1,45 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
-import queryString from 'query-string';
-import { useLocation, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import { RequestsService } from '~/api/services/serviceRequests/serviceRequestsServices';
-import type { PaginatedRequestParams, SortOrder } from '~/models/requestsList';
+import type { RequestFilteredParams, SortOrder } from '~/models/requestsList';
 
 export const useSortedRequests = () => {
-	const location = useLocation();
-	const queryParams = queryString.parse(location.search);
-
-	const [searchParams] = useSearchParams();
-
-	if (queryParams.pageSize) {
-		searchParams.set('pageSize', queryParams.pageSize.toString());
-	}
-	if (queryParams.pageNumber) {
-		searchParams.set('pageNumber', queryParams.pageNumber.toString());
-	}
-	if (queryParams.orderBy) {
-		searchParams.set('orderBy', queryParams.orderBy.toString());
-	}
-	if (queryParams.sortOrder) {
-		searchParams.set('sortOrder', queryParams.sortOrder.toString());
-	}
-
-	const orderBy = queryParams.orderBy?.toString();
-	const sortOrder: SortOrder =
-		queryParams.sortOrder !== undefined
-			? (queryParams.sortOrder as SortOrder)
-			: 'asc';
-
-	const parameters: PaginatedRequestParams = {
-		pageNumber: Number(queryParams.pageNumber),
-		pageSize: Number(queryParams.pageSize),
-		sortColumn: queryParams.orderBy?.toString(),
-		sortOrder: queryParams.sortOrder as SortOrder,
-	};
+	const { parameters } = useRequestsSearchParams();
 
 	const { data, isPending } = useQuery({
 		queryKey: ['requests', 'sortedList', parameters],
 		queryFn: () => RequestsService.getSortedRequests(parameters),
 	});
 
-	return { data, isPending, searchParams, orderBy, sortOrder };
+	return { data, isPending };
+};
+
+export const useRequestsSearchParams = () => {
+	const [searchParams] = useSearchParams();
+
+	const orderBy = searchParams.get('orderBy');
+	const sortOrderParam = searchParams.get('sortOrder');
+	const sortOrder: SortOrder =
+		sortOrderParam !== null ? (sortOrderParam as SortOrder) : 'asc';
+
+	const parameters: RequestFilteredParams = {
+		pageNumber: Number(searchParams.get('pageNumber')),
+		pageSize: Number(searchParams.get('pageSize')),
+		sortColumn: orderBy as string,
+		sortOrder: sortOrderParam as SortOrder,
+		urgencies: searchParams.getAll('urgencies'),
+		categories: searchParams.getAll('categories'),
+		statuses: searchParams.getAll('statuses'),
+	};
+
+	return { parameters, sortOrder, searchParams, orderBy };
 };
