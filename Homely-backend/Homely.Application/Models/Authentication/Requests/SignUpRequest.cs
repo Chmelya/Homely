@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Homely.Application.Authentication.Requests;
+namespace Homely.Application.Models.Authentication.Requests;
 
 public record SignUpRequest(
     [Required] string Email,

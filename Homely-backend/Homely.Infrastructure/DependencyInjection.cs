@@ -1,5 +1,5 @@
-﻿using Homely.Infrastructure.Identification.Authentication;
-using Homely.Infrastructure.Identification.Authentication.Interfaces;
+﻿using Homely.Application.Common.Interfaces.Services;
+using Homely.Infrastructure.Identification.Authentication;
 using Homely.Infrastructure.Identification.Authorization;
 using Homely.Infrastructure.Identification.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

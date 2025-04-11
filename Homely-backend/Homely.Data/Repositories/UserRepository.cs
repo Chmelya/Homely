@@ -1,5 +1,5 @@
-﻿using Homely.Application.Authentication.Requests;
-using Homely.Application.Common.Interfaces.Repositories;
+﻿using Homely.Application.Common.Interfaces.Repositories;
+using Homely.Application.Models.Authentication.Requests;
 using Homely.Domain.Entities.Common;
 using Homely.Infrastructure.Data.Configurations.Rbac.Enities;
 using Microsoft.EntityFrameworkCore;

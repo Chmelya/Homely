@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using Homely.Application.Authentication.Requests;
+using Homely.Application.Models.Authentication.Requests;
 
 namespace Homely.Application.Common.Interfaces.Services;
 

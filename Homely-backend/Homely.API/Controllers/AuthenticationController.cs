@@ -1,5 +1,5 @@
-﻿using Homely.Application.Authentication.Requests;
-using Homely.Application.Common.Interfaces.Services;
+﻿using Homely.Application.Common.Interfaces.Services;
+using Homely.Application.Models.Authentication.Requests;
 using Homely.Infrastructure.Identification.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -72,7 +72,7 @@ const RequestForm = ({
 						className='col-span-2'
 						name='status'
 						label='Status'
-						disabled={!isAdmin}
+						disabled={!isAdmin || !isEditMode}
 					>
 						{options.statuses.map((s) => (
 							<MenuItem key={s.key} value={s.key}>

@@ -13,6 +13,7 @@ import {
 	serviceRequestValidationSchema,
 	type ServiceRequestValues,
 } from '../request-form.model';
+import { StatusEnum } from '~/models/statuses';
 
 const CreateRequestPage = () => {
 	const userId = useAppSelector(authSlice.selectors.user)!.id;
@@ -22,6 +23,7 @@ const CreateRequestPage = () => {
 	const form = useForm<ServiceRequestValues>({
 		defaultValues: {
 			urgency: defaultUrgency,
+			status: StatusEnum.Created,
 		},
 		resolver: zodResolver(serviceRequestValidationSchema),
 		mode: 'onTouched',
@@ -40,6 +42,9 @@ const CreateRequestPage = () => {
 
 	const submitHandler = (formData: ServiceRequestValues) => {
 		const values = formData as unknown as ServiceRequest;
+		values.categoryId = formData.category;
+		values.statusId = formData.status;
+		values.urgencyId = formData.urgency;
 		values.creatorId = userId;
 
 		mutate(values);

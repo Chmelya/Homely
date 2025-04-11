@@ -1,6 +1,6 @@
 ﻿using Homely.Domain.Entities.Common;
 
-namespace Homely.Infrastructure.Identification.Authentication.Interfaces;
+namespace Homely.Application.Common.Interfaces.Services;
 
 public interface IJwtProvider
 {

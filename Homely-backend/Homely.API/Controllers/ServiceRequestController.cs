@@ -33,7 +33,7 @@ namespace Homely.API.Controllers
         }
 
         [HttpPatch("{requestId:int}/owner", Name = "Edit single service for owner only request")]
-        [Authorization(Permissions.RequestEditOnlyOwner)]
+        [Authorization(Permissions.RequestEditSelfOnly)]
         public async Task<IActionResult> EditOwnRequest(
             int requestId,
             [FromBody] UpdateServiceRequestRequest request)
@@ -54,8 +54,11 @@ namespace Homely.API.Controllers
             return result.Match(Ok, Problem);
         }
 
-        [HttpGet("sortedList", Name = "Get paged service requests")]
-        [Authorization(Permissions.RequestRead)]
+        [HttpGet("sortedList", Name = "Get sorted and paged service requests")]
+        [Authorization([
+            Permissions.RequestRead,
+            Permissions.RequestReadSelfOnly
+        ])]
         public async Task<IActionResult> GetRequest(
             //TODO: ErrorOr resolve
             [FromQuery] int pageNumber = 1,
@@ -66,12 +69,20 @@ namespace Homely.API.Controllers
             [FromQuery(Name = "categories[]")] List<Category>? categories = null,
             [FromQuery(Name = "urgencies[]")] List<Urgency>? urgencies = null)
         {
+            // TODO: Refactor?
+            int? userId = null;
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == HomelyClaims.Role)!.Value != Roles.Admin)
+            {
+                userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == HomelyClaims.UserId)!.Value);
+            }
+
             var filter = new ServiceRequestFilter
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 SortColumn = sortColumn,
                 SortOrder = sortOrder,
+                UserId = userId,
                 Statuses = statuses,
                 Categories = categories,
                 Urgencies = urgencies

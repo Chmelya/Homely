@@ -1,4 +1,4 @@
-﻿using Homely.Application.Authentication.Requests;
+﻿using Homely.Application.Models.Authentication.Requests;
 using Homely.Domain.Entities.Common;
 using System.Linq.Expressions;
 

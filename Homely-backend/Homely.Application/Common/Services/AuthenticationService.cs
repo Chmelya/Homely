@@ -1,8 +1,7 @@
 ﻿using ErrorOr;
-using Homely.Application.Authentication.Requests;
 using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
-using Homely.Infrastructure.Identification.Authentication.Interfaces;
+using Homely.Application.Models.Authentication.Requests;
 using System.Text.RegularExpressions;
 
 namespace Homely.Application.Common.Services;

@@ -73,6 +73,11 @@ public class ServiceRequestRepository(ApplicationDbContext context)
 
     private static IQueryable<ServiceRequest> FilterQuery(IQueryable<ServiceRequest> query, ServiceRequestFilter filter)
     {
+        if (filter.UserId is not null)
+        {
+            query = query.Where(sr => sr.CreatorId == filter.UserId);
+        }
+
         if (filter.Statuses is not null)
         {
             query = query.Where(sr => filter.Statuses.Contains(sr.Status));
