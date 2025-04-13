@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Homely.Domain.Entities.EnumEnities
 {
+    // TODO: To internal
     public class Urgency : Entity
     {
         [Key]

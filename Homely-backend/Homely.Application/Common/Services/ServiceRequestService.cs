@@ -13,7 +13,8 @@ using X.PagedList;
 namespace Homely.Application.Common.Services
 {
     public class ServiceRequestService(
-        IServiceRequestRepository requestRepository
+        IServiceRequestRepository requestRepository,
+        IPerformerRepository performerRepository
         ) : IServiceRequestService
     {
         public async Task<ErrorOr<ServiceRequestResponse>> GetRequest(
@@ -158,6 +159,18 @@ namespace Homely.Application.Common.Services
             catch (Exception)
             {
                 return Error.Failure(description: "Error during getting service request options");
+            }
+        }
+
+        public async Task<ErrorOr<List<DropdownValue>>> GetPerformers(Category category)
+        {
+            try
+            {
+                return await performerRepository.GetPerformersByCategory(category);
+            }
+            catch (Exception)
+            {
+                return Error.Failure(description: "Error during getting performers");
             }
         }
     }
