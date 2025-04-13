@@ -43,8 +43,10 @@ namespace Homely.Application.Common.Services
                 StatusName = request.Status.GetDescription(),
                 UrgencyName = request.Urgency.GetDescription(),
                 CategoryName = request.Category.GetDescription(),
+                CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds(),
+
                 Description = request.Details.Description,
-                CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
+                PerformerId = request.Details.PerformerId
             };
 
             return response;
@@ -96,7 +98,7 @@ namespace Homely.Application.Common.Services
             }
         }
 
-        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isOwnMode, int? userId = null)
+        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isUserMode, int? userId = null)
         {
             try
             {
@@ -107,17 +109,23 @@ namespace Homely.Application.Common.Services
                     return Error.NotFound(description: "Service request is not found");
                 }
 
-                if (isOwnMode && updatedRequest.CreatorId != userId)
+                if (isUserMode && updatedRequest.CreatorId != userId)
                 {
                     return Error.Forbidden(description: "You can edit only own requests");
                 }
 
                 updatedRequest.Title = request.Title;
-                updatedRequest.Urgency = request.UrgencyId;
-                updatedRequest.Category = request.CategoryId;
-                updatedRequest.Status = request.StatusId;
 
                 updatedRequest.Details.Description = request.Description;
+
+                if (!isUserMode)
+                {
+                    updatedRequest.Urgency = request.UrgencyId;
+                    updatedRequest.Category = request.CategoryId;
+                    updatedRequest.Status = request.StatusId;
+
+                    updatedRequest.Details.PerformerId = request.PerformerId;
+                }
 
                 await requestRepository.UpdateAsync(updatedRequest);
 

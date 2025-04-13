@@ -7,5 +7,7 @@ namespace Homely.Application.Models.ServiceRequests.Requests
         public int AdministartorId { get; set; }
 
         public RequestStatus StatusId { get; set; }
+
+        public int? PerformerId { get; set; }
     }
 }

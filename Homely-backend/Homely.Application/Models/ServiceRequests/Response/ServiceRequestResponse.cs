@@ -25,5 +25,7 @@
         public long CreatedDate { get; set; }
 
         public string? Description { get; set; }
+
+        public int? PerformerId { get; set; }
     }
 }
