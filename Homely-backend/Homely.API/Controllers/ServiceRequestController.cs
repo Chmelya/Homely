@@ -2,11 +2,10 @@
 using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.Models.ServiceRequests.Requests;
 using Homely.Domain.Constants.Rbac;
+using Homely.Domain.Enums;
 using Homely.Infrastructure.Identification.Authorization;
 using Homely.Infrastructure.Identification.Common;
 using Microsoft.AspNetCore.Mvc;
-using Homely.Domain.Enums;
-using System.Threading.Tasks;
 
 namespace Homely.API.Controllers
 {
@@ -28,7 +27,7 @@ namespace Homely.API.Controllers
             int requestId,
             [FromBody] UpdateServiceRequestRequest request)
         {
-            var result = await requestService.UpdateServiceRequestAsync(requestId, request, isOwnMode: false);
+            var result = await requestService.UpdateServiceRequestAsync(requestId, request, isAdmin: true);
 
             return result.Match(_ => Ok(), Problem);
         }
@@ -41,7 +40,7 @@ namespace Homely.API.Controllers
         {
             int.TryParse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == HomelyClaims.UserId)!.Value, out int userId);
 
-            var result = await requestService.UpdateServiceRequestAsync(requestId, request, isOwnMode: true, userId);
+            var result = await requestService.UpdateServiceRequestAsync(requestId, request, isAdmin: false, userId);
 
             return result.Match(_ => Ok(), Problem);
         }
@@ -111,7 +110,7 @@ namespace Homely.API.Controllers
             return result.Match(Ok, Problem);
         }
 
-        [HttpGet("{category:int}/performers", Name = "Get service request performers per category")]
+        [HttpGet("{category:int}/performers", Name = "Get service request performers for category")]
         [Authorization(allowAnonymus: true)]
         public async Task<IActionResult> GetPerformers(Category category)
         {

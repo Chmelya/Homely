@@ -10,5 +10,6 @@ export interface ServiceRequest {
 	categoryName: number;
 	statusId: number;
 	statusName: number;
+	performerId?: number | null;
 	createdDate: Date;
 }

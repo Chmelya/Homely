@@ -98,7 +98,7 @@ namespace Homely.Application.Common.Services
             }
         }
 
-        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isUserMode, int? userId = null)
+        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isAdmin = false, int? userId = null)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Homely.Application.Common.Services
                     return Error.NotFound(description: "Service request is not found");
                 }
 
-                if (isUserMode && updatedRequest.CreatorId != userId)
+                if (!isAdmin && updatedRequest.CreatorId != userId)
                 {
                     return Error.Forbidden(description: "You can edit only own requests");
                 }
@@ -118,7 +118,7 @@ namespace Homely.Application.Common.Services
 
                 updatedRequest.Details.Description = request.Description;
 
-                if (!isUserMode)
+                if (isAdmin)
                 {
                     updatedRequest.Urgency = request.UrgencyId;
                     updatedRequest.Category = request.CategoryId;

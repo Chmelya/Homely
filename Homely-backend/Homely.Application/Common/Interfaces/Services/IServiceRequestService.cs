@@ -20,5 +20,5 @@ public interface IServiceRequestService
 
     Task<IPagedList<ServiceRequestResponse>> GetRequests(ServiceRequestFilter filter, CancellationToken cancellationToken = default);
 
-    Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isOwnMode, int? userId = null);
+    Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isAdmin = false, int? userId = null);
 }

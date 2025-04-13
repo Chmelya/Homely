@@ -61,7 +61,7 @@ const RequestForm = ({
 			<Form form={form} submitHandler={submitHandler}>
 				<Box className='grid grid-cols-4 gap-4 mt-10'>
 					<FormTextInput
-						name={'title'}
+						name='title'
 						className='col-span-2'
 						label='Title'
 						variant='outlined'

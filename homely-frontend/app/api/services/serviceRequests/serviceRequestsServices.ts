@@ -5,6 +5,7 @@ import type {
 	PaginatedResponse,
 } from '~/models/requestsList';
 import type { ServiceRequestOptions } from '~/models/serviceRequestOptions';
+import type { DropdownValue } from '~/models/dropdownValue';
 
 export class RequestsService {
 	static createRequest = async (serviceRequest: ServiceRequest) => {
@@ -22,6 +23,13 @@ export class RequestsService {
 	static getOptions = async () => {
 		var res = await apiClient.get<ServiceRequestOptions>(
 			`/serviceRequest/options`
+		);
+		return res.data;
+	};
+
+	static getPerformers = async ({ categoryId }: { categoryId: number }) => {
+		var res = await apiClient.get<DropdownValue[]>(
+			`/serviceRequest/${categoryId}/performers`
 		);
 		return res.data;
 	};

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from '~/store/store';
 
 const apiClient = axios.create({
-	baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
+	baseURL: `${import.meta.env.VITE_BASE_URL}api`,
 });
 
 apiClient.interceptors.request.use((config) => {

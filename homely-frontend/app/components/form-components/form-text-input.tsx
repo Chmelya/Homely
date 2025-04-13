@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { Controller, useFormContext, type FieldValues } from 'react-hook-form';
 
-//TODO: why work?
+//TODO: determinate  props
 export interface FormInputProps extends FieldValues {}
 
 const FormTextInput = (props: FormInputProps) => {
