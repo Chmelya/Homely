@@ -12,3 +12,9 @@ export const useRequestQuery = (requestId: number | string) =>
 		queryKey: ['requests', Number(requestId)],
 		queryFn: () => RequestsService.getRequest(Number(requestId)),
 	});
+
+export const usePerformersQuery = (categoryId: number) =>
+	useQuery({
+		queryKey: ['performers', categoryId],
+		queryFn: () => RequestsService.getPerformers({ categoryId }),
+	});

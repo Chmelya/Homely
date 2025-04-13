@@ -1,4 +1,6 @@
-﻿namespace Homely.Domain.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Homely.Domain.Entities.Base;
 
 public abstract class Entity
 {

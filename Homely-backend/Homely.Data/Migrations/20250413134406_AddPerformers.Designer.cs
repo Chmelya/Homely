@@ -4,6 +4,7 @@ using Homely.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homely.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250413134406_AddPerformers")]
+    partial class AddPerformers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,15 +166,10 @@ namespace Homely.Infrastructure.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PerformerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ServiceRequestId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PerformerId");
 
                     b.HasIndex("ServiceRequestId")
                         .IsUnique();
@@ -508,18 +506,11 @@ namespace Homely.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Homely.Domain.Entities.Business.ServiceRequestDetails", b =>
                 {
-                    b.HasOne("Homely.Domain.Entities.Business.Performer", "Performer")
-                        .WithMany()
-                        .HasForeignKey("PerformerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Homely.Domain.Entities.Business.ServiceRequest", "ServiceRequest")
                         .WithOne("Details")
                         .HasForeignKey("Homely.Domain.Entities.Business.ServiceRequestDetails", "ServiceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Performer");
 
                     b.Navigation("ServiceRequest");
                 });

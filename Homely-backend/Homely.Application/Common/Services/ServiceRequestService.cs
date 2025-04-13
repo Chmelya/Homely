@@ -13,7 +13,8 @@ using X.PagedList;
 namespace Homely.Application.Common.Services
 {
     public class ServiceRequestService(
-        IServiceRequestRepository requestRepository
+        IServiceRequestRepository requestRepository,
+        IPerformerRepository performerRepository
         ) : IServiceRequestService
     {
         public async Task<ErrorOr<ServiceRequestResponse>> GetRequest(
@@ -42,8 +43,10 @@ namespace Homely.Application.Common.Services
                 StatusName = request.Status.GetDescription(),
                 UrgencyName = request.Urgency.GetDescription(),
                 CategoryName = request.Category.GetDescription(),
+                CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds(),
+
                 Description = request.Details.Description,
-                CreatedDate = ((DateTimeOffset)request.CreatedAt).ToUnixTimeMilliseconds()
+                PerformerId = request.Details.PerformerId
             };
 
             return response;
@@ -95,7 +98,7 @@ namespace Homely.Application.Common.Services
             }
         }
 
-        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isOwnMode, int? userId = null)
+        public async Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isAdmin = false, int? userId = null)
         {
             try
             {
@@ -106,17 +109,23 @@ namespace Homely.Application.Common.Services
                     return Error.NotFound(description: "Service request is not found");
                 }
 
-                if (isOwnMode && updatedRequest.CreatorId != userId)
+                if (!isAdmin && updatedRequest.CreatorId != userId)
                 {
                     return Error.Forbidden(description: "You can edit only own requests");
                 }
 
                 updatedRequest.Title = request.Title;
-                updatedRequest.Urgency = request.UrgencyId;
-                updatedRequest.Category = request.CategoryId;
-                updatedRequest.Status = request.StatusId;
 
                 updatedRequest.Details.Description = request.Description;
+
+                if (isAdmin)
+                {
+                    updatedRequest.Urgency = request.UrgencyId;
+                    updatedRequest.Category = request.CategoryId;
+                    updatedRequest.Status = request.StatusId;
+
+                    updatedRequest.Details.PerformerId = request.PerformerId;
+                }
 
                 await requestRepository.UpdateAsync(updatedRequest);
 
@@ -158,6 +167,18 @@ namespace Homely.Application.Common.Services
             catch (Exception)
             {
                 return Error.Failure(description: "Error during getting service request options");
+            }
+        }
+
+        public async Task<ErrorOr<List<DropdownValue>>> GetPerformers(Category category)
+        {
+            try
+            {
+                return await performerRepository.GetPerformersByCategory(category);
+            }
+            catch (Exception)
+            {
+                return Error.Failure(description: "Error during getting performers");
             }
         }
     }
