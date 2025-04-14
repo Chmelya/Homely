@@ -8,13 +8,14 @@ namespace Homely.Application.Common.Services;
 
 public class AuthenticationService(
     IJwtProvider tokenProvider,
-    IUserRepository userRepository) : IAuthenticationService
+    IUserRepository userRepository,
+    IHashierService hashierService) : IAuthenticationService
 {
     public async Task<ErrorOr<string>> SignIn(string email, string password, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetWithRole(u => u.Email == email, cancellationToken);
 
-        if (user?.Password != password)
+        if (user is null || !hashierService.Verify(password, user.Password))
         {
             return Error.NotFound(description: "Login or password is incorrect.");
         }
@@ -68,7 +69,9 @@ public class AuthenticationService(
             return Error.Conflict(description: "Login alredy in use.");
         }
 
-        await userRepository.AddResident(request);
+        var passwordHash = hashierService.Hash(request.Password);
+
+        await userRepository.AddResident(request, passwordHash);
 
         return Result.Success;
     }

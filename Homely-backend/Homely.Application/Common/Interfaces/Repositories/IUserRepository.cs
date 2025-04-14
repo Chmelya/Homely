@@ -6,7 +6,7 @@ namespace Homely.Application.Common.Interfaces.Repositories;
 
 public interface IUserRepository : IBaseRepository<User>
 {
-    Task AddResident(SignUpRequest request);
+    Task AddResident(SignUpRequest request, string password);
 
     Task<User?> GetWithRole(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken = default);
 }

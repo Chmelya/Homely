@@ -1,20 +1,20 @@
-﻿using Homely.Application.Common.Interfaces.Repositories;
+﻿using System.Linq.Expressions;
+using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Models.Authentication.Requests;
 using Homely.Domain.Entities.Common;
 using Homely.Infrastructure.Data.Configurations.Rbac.Enities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Homely.Infrastructure.Data.Repositories;
 
 public class UserRepository(ApplicationDbContext context) : BaseRepository<User>(context), IUserRepository
 {
-    public async Task AddResident(SignUpRequest request)
+    public async Task AddResident(SignUpRequest request, string password)
     {
         var newResident = new User()
         {
             Email = request.Email,
-            Password = request.Password,
+            Password = password,
             FirstName = request.FirstName,
             MiddleName = request.MiddleName,
             LastName = request.LastName,
