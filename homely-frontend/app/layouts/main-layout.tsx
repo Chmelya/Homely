@@ -1,12 +1,12 @@
 import { Container } from '@mui/material';
 import { Outlet } from 'react-router';
 import { Authorized } from '~/auth/authorized';
-import AppBar from '~/components/app-bar/app-bar';
+import ApplicationBar from '~/components/app-bar/app-bar';
 
 const MainLayout = () => {
 	return (
 		<Authorized>
-			<AppBar />
+			<ApplicationBar />
 			<Container className='mt-20'>
 				<Outlet />
 			</Container>

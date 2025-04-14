@@ -57,11 +57,15 @@ export default function SideMenu() {
 
 	return (
 		<>
-			<div className='justify-start'>
-				<IconButton onClick={toggleDrawer(true)}>
-					<MenuIcon />
-				</IconButton>
-			</div>
+			<IconButton
+				onClick={toggleDrawer(true)}
+				size='large'
+				edge='start'
+				color='inherit'
+			>
+				<MenuIcon />
+			</IconButton>
+
 			<Drawer open={open} onClose={toggleDrawer(false)}>
 				{DrawerList}
 			</Drawer>

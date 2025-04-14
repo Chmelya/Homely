@@ -10,7 +10,7 @@ const TableToolbar = ({
 	searchParams: URLSearchParams;
 }) => {
 	return (
-		<Toolbar className='bg-pink-400'>
+		<Toolbar>
 			<Stack
 				direction='row'
 				justifyContent='space-between'
