@@ -6,6 +6,7 @@ import {
 	Menu,
 	MenuItem,
 	Stack,
+	Switch,
 	Toolbar,
 	Typography,
 } from '@mui/material';
@@ -14,8 +15,17 @@ import { useAppSelector } from '~/store/hooks/store-hooks';
 import { authSlice } from '~/store/auth/auth-slice';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
+import {
+	Brightness4,
+	Brightness7,
+	DarkMode,
+	LightMode,
+} from '@mui/icons-material';
 import { useThemeContext } from '~/theme-context';
+import {
+	LightMode as LightIcon,
+	DarkMode as DarkIcon,
+} from '@mui/icons-material';
 
 export default function ApplicationBar() {
 	const user = useAppSelector(authSlice.selectors.user)!;
@@ -48,6 +58,17 @@ export default function ApplicationBar() {
 						alignItems='center'
 						justifyContent='flex-end'
 					>
+						<Switch
+							size='medium'
+							checked={mode !== 'light'}
+							onChange={toggleTheme}
+							icon={
+								<LightIcon className='text-white scale-125' fontSize='small' />
+							}
+							checkedIcon={
+								<DarkIcon className='text-white scale-125' fontSize='small' />
+							}
+						/>
 						<Stack className='text-sm' direction='column'>
 							<Box>{user.name}</Box>
 							<Box>{user.email}</Box>
@@ -73,9 +94,6 @@ export default function ApplicationBar() {
 						>
 							<MenuItem disabled>
 								<Typography sx={{ textAlign: 'center' }}>Profile</Typography>
-							</MenuItem>
-							<MenuItem onClick={toggleTheme}>
-								{mode === 'light' ? <Brightness4 /> : <Brightness7 />}
 							</MenuItem>
 							<MenuItem onClick={signOutHandler}>
 								<Typography sx={{ textAlign: 'center' }}>Sign Out</Typography>
