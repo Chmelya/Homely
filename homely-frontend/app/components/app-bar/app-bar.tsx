@@ -15,22 +15,9 @@ import { useAppSelector } from '~/store/hooks/store-hooks';
 import { authSlice } from '~/store/auth/auth-slice';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-	Brightness4,
-	Brightness7,
-	DarkMode,
-	LightMode,
-} from '@mui/icons-material';
-import { useThemeContext } from '~/theme-context';
-import {
-	LightMode as LightIcon,
-	DarkMode as DarkIcon,
-} from '@mui/icons-material';
 
 export default function ApplicationBar() {
 	const user = useAppSelector(authSlice.selectors.user)!;
-
-	const { mode, toggleTheme } = useThemeContext();
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const isOpen = Boolean(anchorEl);
@@ -49,7 +36,11 @@ export default function ApplicationBar() {
 			<AppBar position='static'>
 				<Toolbar>
 					<SideMenu />
-					<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+					<Typography
+						variant='h6'
+						component='div'
+						sx={{ flexGrow: 1, marginLeft: '10px' }}
+					>
 						Homely
 					</Typography>
 					<Stack
@@ -58,17 +49,6 @@ export default function ApplicationBar() {
 						alignItems='center'
 						justifyContent='flex-end'
 					>
-						<Switch
-							size='medium'
-							checked={mode !== 'light'}
-							onChange={toggleTheme}
-							icon={
-								<LightIcon className='text-white scale-125' fontSize='small' />
-							}
-							checkedIcon={
-								<DarkIcon className='text-white scale-125' fontSize='small' />
-							}
-						/>
 						<Stack className='text-sm' direction='column'>
 							<Box>{user.name}</Box>
 							<Box>{user.email}</Box>
