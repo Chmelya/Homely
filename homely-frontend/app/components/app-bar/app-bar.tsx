@@ -6,11 +6,9 @@ import {
 	Menu,
 	MenuItem,
 	Stack,
-	Switch,
 	Toolbar,
 	Typography,
 } from '@mui/material';
-import SideMenu from '../sideMenu/sideMenu';
 import { useAppSelector } from '~/store/hooks/store-hooks';
 import { authSlice } from '~/store/auth/auth-slice';
 import { useState } from 'react';
@@ -32,56 +30,53 @@ export default function ApplicationBar() {
 	const signOutHandler = () => dispatch(authSlice.actions.signOut());
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position='static'>
-				<Toolbar>
-					<SideMenu />
-					<Typography
-						variant='h6'
-						component='div'
-						sx={{ flexGrow: 1, marginLeft: '10px' }}
-					>
-						Homely
-					</Typography>
-					<Stack
-						direction='row'
-						spacing={2}
-						alignItems='center'
-						justifyContent='flex-end'
-					>
-						<Stack className='text-sm' direction='column'>
-							<Box>{user.name}</Box>
-							<Box>{user.email}</Box>
-						</Stack>
-						<IconButton onClick={handleOpen}>
-							<Avatar />
-						</IconButton>
-						<Menu
-							className='mt-5'
-							id='menu-appbar'
-							anchorEl={anchorEl}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							open={isOpen}
-							onClose={handleClose}
-						>
-							<MenuItem disabled>
-								<Typography sx={{ textAlign: 'center' }}>Profile</Typography>
-							</MenuItem>
-							<MenuItem onClick={signOutHandler}>
-								<Typography sx={{ textAlign: 'center' }}>Sign Out</Typography>
-							</MenuItem>
-						</Menu>
+		<AppBar position='static'>
+			<Toolbar>
+				<Typography
+					variant='h6'
+					component='div'
+					sx={{ flexGrow: 1, marginLeft: '10px' }}
+				>
+					Homely
+				</Typography>
+				<Stack
+					direction='row'
+					spacing={2}
+					alignItems='center'
+					justifyContent='flex-end'
+				>
+					<Stack className='text-sm' direction='column'>
+						<Box>{user.name}</Box>
+						<Box>{user.email}</Box>
 					</Stack>
-				</Toolbar>
-			</AppBar>
-		</Box>
+					<IconButton onClick={handleOpen}>
+						<Avatar />
+					</IconButton>
+					<Menu
+						className='mt-5'
+						id='menu-appbar'
+						anchorEl={anchorEl}
+						anchorOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						keepMounted
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						open={isOpen}
+						onClose={handleClose}
+					>
+						<MenuItem disabled>
+							<Typography sx={{ textAlign: 'center' }}>Profile</Typography>
+						</MenuItem>
+						<MenuItem onClick={signOutHandler}>
+							<Typography sx={{ textAlign: 'center' }}>Sign Out</Typography>
+						</MenuItem>
+					</Menu>
+				</Stack>
+			</Toolbar>
+		</AppBar>
 	);
 }
