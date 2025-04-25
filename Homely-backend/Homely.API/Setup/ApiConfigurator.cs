@@ -22,6 +22,7 @@ internal static class ApiConfigurator
 
         builder.Services.AddScoped<IServiceRequestService, ServiceRequestService>();
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddScoped<IHashierService, HashierService>();
 
         builder.Services.AddSwaggerGen(options =>
         {

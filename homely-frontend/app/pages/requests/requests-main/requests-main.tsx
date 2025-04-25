@@ -35,13 +35,13 @@ const RequestsMainPage = () => {
 	return (
 		<Box>
 			{/* TODO: Skeleton on load */}
-			<TableContainer component={Paper} elevation={3} className=' mt-6'>
+			<TableContainer component={Paper} elevation={3} className='mt-6'>
 				<TableToolbar
 					options={options}
 					searchParams={searchParams}
 				></TableToolbar>
 				<Table size='small'>
-					<TableHead className='bg-pink-400'>
+					<TableHead>
 						<TableHeadRow
 							sortOrder={sortOrder}
 							orderBy={orderBy}
