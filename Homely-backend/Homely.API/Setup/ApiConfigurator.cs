@@ -10,6 +10,8 @@ namespace Homely.API.Setup;
 
 internal static class ApiConfigurator
 {
+    private const string AllowForFrontend = "AllowForFrontend";
+
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddOpenApi();
@@ -51,6 +53,16 @@ Example: 'Bearer 1234ABCD'.",
             });
         });
 
+
+        var frontednUrl = builder.Configuration["CORS:FrontendUrl"]!;
+        builder.Services.AddCors(options => {
+            options.AddPolicy(AllowForFrontend, policy => {
+                policy.WithOrigins(frontednUrl)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+
         return builder;
     }
 
@@ -67,7 +79,7 @@ Example: 'Bearer 1234ABCD'.",
         app.AddExceptionHandler();
 
         app.UseHttpsRedirection();
-        app.UseCors();
+        app.UseCors(AllowForFrontend);
 
         app.UseAuthentication();
         app.UseAuthorization();

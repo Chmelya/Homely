@@ -18,13 +18,11 @@ import {
 } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import LightIcon from '@mui/icons-material/LightMode';
+import DarkIcon from '@mui/icons-material/DarkMode';
+import CreateIcon from '@mui/icons-material/Create';
+import ListIcon from '@mui/icons-material/ListAlt';
 import { useThemeContext } from '~/theme-context';
-import {
-	LightMode as LightIcon,
-	DarkMode as DarkIcon,
-	Create as CreateIcon,
-	ListAlt as ListIcon,
-} from '@mui/icons-material';
 import { Link } from 'react-router';
 import { ROUTES } from '~/routes/paths';
 
