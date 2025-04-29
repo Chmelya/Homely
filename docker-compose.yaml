@@ -1,0 +1,61 @@
+services:
+  backend:
+    build:
+      context: ./homely-backend
+    ports:
+      - '4200:4200'
+    environment:
+      - ASPNETCORE_URLS=http://+:4200
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__DefaultConnection=Server=sqlserver, 1433;Database=homely;User Id=SA;Password=${SQL_PASSWORD};TrustServerCertificate=true;Integrated Security=false;
+      - ConnectionStrings__Redis=redis:6379,password=${REDIS_PASSWORD},abortConnect=false
+      - CORS__FrontendUrl=http://localhost:3000
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./homely-frontend
+      args:
+        - VITE_API_URL=${API_URL}
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    hostname: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SQL_PASSWORD}
+      - MSSQL_DATABASE=${SQL_DB_NAME}
+    ports:
+      - '4000:1433'
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "/opt/mssql-tools18/bin/sqlcmd -U sa -P ${SQL_PASSWORD} -Q 'SELECT 1' -C || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    command: redis-server --save 60 1 --requirepass ${REDIS_PASSWORD}
+volumes:
+  sqlserver-data:
+  redis-data:
