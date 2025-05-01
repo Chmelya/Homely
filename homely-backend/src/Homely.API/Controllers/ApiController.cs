@@ -25,9 +25,20 @@ public abstract class ApiController : ControllerBase
 
     protected IActionResult Problem(Error error)
     {
-        //TODO: Refactor
+        var statusCode = error.NumericType switch
+        {
+            (int)ErrorType.Validation => StatusCodes.Status400BadRequest,
+            (int)ErrorType.Conflict => StatusCodes.Status409Conflict,
+            (int)ErrorType.NotFound => StatusCodes.Status404NotFound,
+            (int)ErrorType.Unauthorized => StatusCodes.Status404NotFound,
+            (int)ErrorType.Forbidden => StatusCodes.Status403Forbidden,
+            (int)ErrorType.Unexpected => StatusCodes.Status500InternalServerError,
+            (int)ErrorType.Failure => StatusCodes.Status500InternalServerError,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
         return Problem(
-            statusCode: 500,
+            statusCode: statusCode,
             detail: error.Description);
     }
 
