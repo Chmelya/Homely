@@ -34,7 +34,7 @@ services:
       - MSSQL_SA_PASSWORD=${SQL_PASSWORD}
       - MSSQL_DATABASE=${SQL_DB_NAME}
     ports:
-      - '1433:1433'
+      - '4000:1433'
     volumes:
       - sqlserver-data:/var/opt/mssql
     healthcheck:

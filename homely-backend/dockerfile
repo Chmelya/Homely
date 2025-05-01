@@ -13,6 +13,8 @@ RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     dotnet restore "Homely.API/Homely.API.csproj"
 
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    --mount=type=cache,target=/src/bin \
+    --mount=type=cache,target=/src/obj \
     dotnet publish "Homely.API/Homely.API.csproj" \
     --no-restore \
     -c $BUILD_CONFIGURATION \
