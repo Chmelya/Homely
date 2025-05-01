@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using Homely.Application.Common.Filters;
 using Homely.Application.Common.HelperModels;
+using Homely.Application.Models.Common;
 using Homely.Application.Models.ServiceRequests.Requests;
 using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Enums;
@@ -18,7 +19,7 @@ public interface IServiceRequestService
 
     Task<ErrorOr<ServiceRequestResponse>> GetRequest(int requestId, CancellationToken cancellationToken = default);
 
-    Task<IPagedList<ServiceRequestResponse>> GetRequests(ServiceRequestFilter filter, CancellationToken cancellationToken = default);
+    Task<ErrorOr<PagedListResponse<ServiceRequestResponse>>> GetRequests(ServiceRequestFilter filter, CancellationToken cancellationToken = default);
 
     Task<ErrorOr<Success>> UpdateServiceRequestAsync(int requestId, UpdateServiceRequestRequest request, bool isAdmin = false, int? userId = null);
 }
