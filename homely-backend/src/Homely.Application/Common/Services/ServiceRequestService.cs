@@ -4,6 +4,8 @@ using Homely.Application.Common.HelperModels;
 using Homely.Application.Common.Interfaces.Repositories;
 using Homely.Application.Common.Interfaces.Services;
 using Homely.Application.Extensions;
+using Homely.Application.Extensions.PagedList;
+using Homely.Application.Models.Common;
 using Homely.Application.Models.ServiceRequests.Requests;
 using Homely.Application.Models.ServiceRequests.Response;
 using Homely.Domain.Entities.Business;
@@ -52,20 +54,20 @@ namespace Homely.Application.Common.Services
             return response;
         }
 
-        public async Task<IPagedList<ServiceRequestResponse>> GetRequests(
+        public async Task<ErrorOr<PagedListResponse<ServiceRequestResponse>>> GetRequests(
             ServiceRequestFilter filter,
             CancellationToken cancellationToken = default)
         {
             try
             {
-                var list = await requestRepository.GetPagedAsync(filter, cancellationToken: cancellationToken);
+                var list = (await requestRepository
+                    .GetPagedAsync(filter, cancellationToken: cancellationToken))
+                    .ToPagedResponse();
 
                 return list;
             }
             catch (Exception)
             {
-                //TODO: ErrorOr resolve
-                //return Error.Failure(description: "Error during fetching service requests");
                 throw new InvalidOperationException("Error during fetching service requests");
             }
         }
