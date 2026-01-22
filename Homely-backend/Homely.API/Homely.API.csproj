@@ -1,7 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <ItemGroup>
-    <ProjectReference Include="..\Homely.Application\Homely.Application.csproj" />
-    <ProjectReference Include="..\Homely.Data\Homely.Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\Homely.Infrastructure\Homely.Infrastructure.Identification.csproj" />
-  </ItemGroup>
-</Project>

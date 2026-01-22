@@ -90,15 +90,7 @@ namespace Homely.API.Controllers
 
             var result = await requestService.GetRequests(filter);
 
-            var resultWithCount = new
-            {
-                result.PageCount,
-                result.PageNumber,
-                TotalCount = result.TotalItemCount,
-                Items = result,
-            };
-
-            return Ok(resultWithCount);
+            return result.Match(Ok, Problem);
         }
 
         [HttpGet("options", Name = "Get service request options")]

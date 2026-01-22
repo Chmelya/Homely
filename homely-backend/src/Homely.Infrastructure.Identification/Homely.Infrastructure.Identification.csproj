@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Homely.Data\Homely.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\Homely.Infrastructure.Data\Homely.Infrastructure.Data.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	<NoWarn>CS8618</NoWarn>
